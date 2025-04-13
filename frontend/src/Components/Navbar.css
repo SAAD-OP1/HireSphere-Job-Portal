@@ -1,0 +1,56 @@
+.navbar {
+  background-color: white;
+  border-bottom: 1px solid #ddd;
+  padding: 16px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-logo a {
+  font-size: 24px;
+  font-weight: bold;
+  text-decoration: none;
+  color: black;
+}
+
+.navbar-links a {
+  margin-left: 24px;
+  text-decoration: none;
+  color: black;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.navbar-links a:hover {
+  color: #555;
+}
+
+.navbar-links .btn {
+  background-color: black;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  margin-left: 16px;
+  transition: opacity 0.3s ease;
+}
+
+.navbar-links .btn:hover {
+  opacity: 0.85;
+}
+
+.logout-btn {
+  background-color: transparent;
+  border: 2px solid #ff4d4f;
+  color: #ff4d4f;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s ease-in-out;
+}
+
+.logout-btn:hover {
+  background-color: #ff4d4f;
+  color: white;
+}

@@ -1,0 +1,87 @@
+.signin-container {
+    max-width: 400px;
+    margin: 60px auto;
+    padding: 40px;
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .signin-container h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #ffffff;
+  }
+  
+  .role-select {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+  }
+  
+  .role-select button {
+    flex: 1;
+    padding: 10px 0;
+    border: 2px solid #ffffff33;
+    background-color: transparent;
+    color: #ffffffcc;
+    font-weight: 600;
+    border-radius: 8px;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .role-select button:hover {
+    background-color: #2a2a2a;
+  }
+  
+  .role-select button.active {
+    background-color: #ffffff11;
+    border-color: #ffffff77;
+    color: #ffffff;
+  }
+  
+  .signin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .signin-form input {
+    padding: 12px;
+    background-color: #2a2a2a;
+    color: #ffffff;
+    border: 1px solid #444;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.2s;
+  }
+  
+  .signin-form input::placeholder {
+    color: #999;
+  }
+  
+  .signin-form input:focus {
+    border-color: #888;
+    outline: none;
+  }
+  
+  .submit-btn {
+    background-color: #ffffff22;
+    color: white;
+    padding: 12px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit-btn:hover {
+    background-color: #ffffff33;
+  }
+  
