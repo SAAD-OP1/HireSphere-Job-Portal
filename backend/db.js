@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-mongoose.connect('Give DB URL')
+mongoose.connect('mongodb+srv://syedsaadsharief:Saad1234.@cluster0.ovkea9k.mongodb.net/HireSphereDB')
 
 const employeeSchema = new mongoose.Schema({
     email: String,

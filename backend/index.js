@@ -3,7 +3,7 @@ const app = express();
 const router = require('./routes');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const { MONGO_URL } = require('./config'); // 👈 use config.js instead
+const { MONGO_URL } = require('./config'); 
 
 app.use(cors());
 app.use(express.json());

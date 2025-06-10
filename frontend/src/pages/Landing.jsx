@@ -1,7 +1,20 @@
 import { useEffect, useState } from 'react';
 import '../pageStyles/Landing.css';
+import { useNavigate } from "react-router-dom";
+import { getUserRole } from "../utils/auth";
 
 const Landing = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const role = getUserRole();
+    if (role === "employee") {
+      navigate("/employee/dashboard");
+    } else if (role === "employer") {
+      navigate("/employer/dashboard");
+    }
+  }, []);
+  
   const [jobCount, setJobCount] = useState(0);
   const [seekerCount, setSeekerCount] = useState(0);
 

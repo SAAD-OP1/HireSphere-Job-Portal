@@ -8,10 +8,12 @@ const SignIn = () => {
     email: '',
     password: ''
   });
+  const [warning, setWarning] = useState(''); // <-- state for warnings
 
   const navigate = useNavigate();
 
   const handleChange = (e) => {
+    setWarning(''); // clear warning on change
     setFormData(prev => ({
       ...prev,
       [e.target.name]: e.target.value
@@ -20,14 +22,18 @@ const SignIn = () => {
 
   const handleRoleSelect = (selectedRole) => {
     setRole(selectedRole);
-    setFormData({
-      email: '',
-      password: ''
-    });
+    setFormData({ email: '', password: '' });
+    setWarning('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.email || !formData.password) {
+      setWarning('Please enter both email and password.');
+      return;
+    }
+
     const endpoint = role === 'jobseeker'
       ? 'http://localhost:3000/api/employee/signin'
       : 'http://localhost:3000/api/employer/signin';
@@ -45,9 +51,10 @@ const SignIn = () => {
         localStorage.setItem('token', data.token);
         navigate(role === 'jobseeker' ? '/employee/dashboard' : '/employer/dashboard');
       } else {
-        console.error(data.message || 'Login failed');
+        setWarning(data.message || 'Invalid email or password.');
       }
     } catch (err) {
+      setWarning('Network error. Please try again later.');
       console.error('Error:', err);
     }
   };
@@ -68,7 +75,7 @@ const SignIn = () => {
         >
           Recruiter
         </button>
-      </div>
+      </div> 
 
       <form onSubmit={handleSubmit} className="signin-form">
         <input
@@ -87,8 +94,8 @@ const SignIn = () => {
           value={formData.password}
           onChange={handleChange}
         />
-
         <button type="submit" className="submit-btn">Sign In</button>
+        {warning && <p className="warning-message">{warning}</p>}
       </form>
     </div>
   );

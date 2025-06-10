@@ -4,6 +4,7 @@ import '../pageStyles/SignUp.css';
 
 const SignUp = () => {
   const [role, setRole] = useState('jobseeker');
+  const [error, setError] = useState(''); // <- ADD THIS
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -21,7 +22,7 @@ const SignUp = () => {
 
   const handleRoleSelect = (selectedRole) => {
     setRole(selectedRole);
-    // Reset form when switching roles
+    setError(''); // clear error on role switch
     setFormData({
       email: '',
       password: '',
@@ -34,10 +35,12 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(''); // clear old error before new request
+
     const endpoint = role === 'jobseeker'
       ? 'http://localhost:3000/api/employee/signup'
       : 'http://localhost:3000/api/employer/signup';
-  
+
     const payload =
       role === 'jobseeker'
         ? {
@@ -53,32 +56,27 @@ const SignUp = () => {
             name: formData.name,
             companyName: formData.companyName
           };
-  
+
     try {
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-  
-      const data = await res.json(); // parse the response
-  
+
+      const data = await res.json();
+
       if (res.ok && data.token) {
-        localStorage.setItem('token', data.token); // store the token
-  
-        if (role === 'jobseeker') {
-          navigate('/employee/dashboard');
-        } else {
-          navigate('/employer/dashboard');
-        }
+        localStorage.setItem('token', data.token);
+        navigate(role === 'jobseeker' ? '/employee/dashboard' : '/employer/dashboard');
       } else {
-        console.error('Signup failed:', data.message || 'Unknown error');
+        setError(data.message || 'Signup failed. Please check your inputs.');
       }
     } catch (error) {
+      setError('Network error. Please try again.');
       console.error('Error:', error);
     }
   };
-  
 
   return (
     <div className="signup-container">
@@ -98,11 +96,14 @@ const SignUp = () => {
         </button>
       </div>
 
+      {/* DISPLAY ERROR MESSAGE HERE */}
+      {error && <div className="error-message">{error}</div>}
+
       <form onSubmit={handleSubmit} className="signup-form">
         <input
           type="email"
           name="email"
-          placeholder="email"
+          placeholder="Email"
           required
           value={formData.email}
           onChange={handleChange}
