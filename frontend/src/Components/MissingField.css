@@ -1,0 +1,20 @@
+.plus-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  background-color: #ccc;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  margin-left: 8px;
+  transition: background-color 0.3s;
+}
+
+.plus-icon:hover {
+  background-color: #999;
+  color: white;
+}
