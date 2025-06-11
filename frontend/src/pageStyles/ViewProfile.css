@@ -1,0 +1,76 @@
+.profile-container {
+  padding: 20px;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 20px;
+}
+
+.left-panel,
+.center-panel,
+.right-panel {
+  background: #1f1f1f;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.profile-image {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.experience-block {
+  margin-bottom: 10px;
+  padding: 10px;
+  background: #2c2c2c;
+  border-radius: 5px;
+}
+
+.right-panel button {
+  display: block;
+  margin-bottom: 15px;
+  width: 100%;
+  padding: 10px;
+  background-color: #4caf50;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+.progress-container {
+  margin-top: 20px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background: #444;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.progress {
+  height: 10px;
+  background: #00e676;
+  border-radius: 5px;
+}
+
+.bottom-section {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.edit-button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}

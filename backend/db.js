@@ -9,8 +9,24 @@ const employeeSchema = new mongoose.Schema({
     jobRole: String,
     image: {
         type: String,
-        default: '', // Default empty if not uploaded
+        default: '', 
     },
+    experience: [
+    {
+        company: String,
+        role: String,
+        from: String, // e.g. "Apr 2020"
+        to: String,   // e.g. "Present"
+        location: String
+    }
+    ],
+    basicInfo: [{
+        age: Number,
+        yearsOfExperience: Number,
+        ctc: String,
+        location: String
+    }],
+
     introduction: {
         type: String,
         default: '',
@@ -19,7 +35,10 @@ const employeeSchema = new mongoose.Schema({
     skills: {
         type: [String], // This allows multiple skills like ['JavaScript', 'Node.js', 'MongoDB']
     },
-
+    resume: {
+        type: String,
+        default: '',
+    }
 });
 
 const employerSchema = new mongoose.Schema({

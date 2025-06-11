@@ -9,8 +9,9 @@ import ViewApplications from './pages/ViewApplications';
 import JobSeekerDashboard from './pages/JobSeekerDashboard';
 import MyApplications from './pages/MyApplications';
 import EditApplication from './pages/EditApplication';
-import Profile from './pages/Profile';
+import EditProfile from './pages/EditProfile';
 import ApplyToJob from './pages/ApplyToJob';
+import ViewProfile from './pages/ViewProfile';
 
 function App() {
   return (
@@ -32,7 +33,8 @@ function App() {
         <Route path="/employee/apply-job/:id" element={<ApplyToJob />} />
         <Route path="/employee/my-applications" element={<MyApplications />} />
         <Route path="/employee/edit-application/:id" element={<EditApplication />} />
-        <Route path="/employee/profile" element={<Profile />} />
+        <Route path="/employee/edit-profile" element={<EditProfile />} />
+        <Route path="/employee/my-profile" element={<ViewProfile />} />
       </Routes>
     </BrowserRouter>
   );

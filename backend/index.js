@@ -7,6 +7,7 @@ const { MONGO_URL } = require('./config');
 
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static('uploads'));
 app.use('/api', router);
 
 mongoose.connect(MONGO_URL)
