@@ -6,7 +6,7 @@ const EditProfile = () => {
   const [skills, setSkills] = useState('');
   const [image, setImage] = useState(null);
   const [resume, setResume] = useState(null);
-  const [basicInfo, setBasicInfo] = useState({ age: '', location: '', phone: '' });
+  const [basicInfo, setBasicInfo] = useState({ age: '', highestQualification: '', location: ''});
   const [experience, setExperience] = useState([{ role: '', company: '', duration: '' }]);
   const [message, setMessage] = useState('');
 
@@ -42,6 +42,16 @@ const EditProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage('');
+
+    // Validate experience fields
+    for (const exp of experience) {
+      if (!exp.role || !exp.company || !exp.duration) {
+        setMessage('Please fill all fields in each experience entry.');
+        return;
+      }
+    }
+
     const form = new FormData();
     form.append('introduction', introduction);
     form.append('skills', JSON.stringify(skills.split(',').map(s => s.trim())));
@@ -68,6 +78,7 @@ const EditProfile = () => {
     }
   };
 
+
   return (
     <div className="profile-container">
       <h2>Update Your Profile</h2>
@@ -91,6 +102,13 @@ const EditProfile = () => {
         <h3>Basic Information</h3>
         <input
           type="text"
+          name="highestQualification"
+          value={basicInfo.highestQualification}
+          placeholder="Highest Qualification"
+          onChange={handleBasicInfoChange}
+        />
+        <input
+          type="text"
           name="age"
           value={basicInfo.age}
           placeholder="Age"
@@ -102,15 +120,7 @@ const EditProfile = () => {
           value={basicInfo.location}
           placeholder="Location"
           onChange={handleBasicInfoChange}
-        />
-        <input
-          type="text"
-          name="phone"
-          value={basicInfo.phone}
-          placeholder="Phone"
-          onChange={handleBasicInfoChange}
-        />
-
+        />        
         <h3>Experience</h3>
         {experience.map((exp, index) => (
           <div key={index} className="experience-entry">
@@ -132,8 +142,20 @@ const EditProfile = () => {
               placeholder="Years (e.g. 2020-2023)"
               onChange={(e) => handleExperienceChange(index, 'duration', e.target.value)}
             />
+            <button
+              type="button"
+              className="delete-btn"
+              onClick={() => {
+                const updated = [...experience];
+                updated.splice(index, 1); // remove entry
+                setExperience(updated);
+              }}
+            >
+              Delete
+            </button>
           </div>
         ))}
+
         <button type="button" onClick={addExperience}>+ Add Experience</button>
 
         <label>Profile Image</label>

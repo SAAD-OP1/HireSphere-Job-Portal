@@ -2,43 +2,40 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb+srv://syedsaadsharief:Saad1234.@cluster0.ovkea9k.mongodb.net/HireSphereDB')
 
 const employeeSchema = new mongoose.Schema({
-    email: String,
-    password: String,
-    name: String,
-    phoneNumber: String,
-    jobRole: String,
-    image: {
-        type: String,
-        default: '', 
-    },
-    experience: [
+  email: String,
+  password: String,
+  name: String,
+  phoneNumber: String,
+  jobRole: String,
+  image: {
+    type: String,
+    default: '',
+  },
+  experience: [
     {
-        company: String,
-        role: String,
-        from: String, // e.g. "Apr 2020"
-        to: String,   // e.g. "Present"
-        location: String
+      role: String,
+      company: String,
+      duration: String,
     }
-    ],
-    basicInfo: [{
-        age: Number,
-        yearsOfExperience: Number,
-        ctc: String,
-        location: String
-    }],
-
-    introduction: {
-        type: String,
-        default: '',
-        maxlength: 1000 // Optional: Limit length of intro
-      },
-    skills: {
-        type: [String], // This allows multiple skills like ['JavaScript', 'Node.js', 'MongoDB']
+  ],
+  basicInfo: {
+    age: { type: Number, default: null },
+    highestQualification: { type: String, default: '' },
+    location: { type: String, default: '' },
     },
-    resume: {
-        type: String,
-        default: '',
-    }
+
+  introduction: {
+    type: String,
+    default: '',
+    maxlength: 1000
+  },
+  skills: {
+    type: [String],
+  },
+  resume: {
+    type: String,
+    default: '',
+  }
 });
 
 const employerSchema = new mongoose.Schema({
