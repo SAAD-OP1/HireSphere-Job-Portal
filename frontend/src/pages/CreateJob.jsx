@@ -8,6 +8,7 @@ const CreateJob = () => {
     company: '',
     industry: '',
     location: '',
+    salary: '',
     openingsLeft: '',
     skills: ''
   });
@@ -24,9 +25,11 @@ const CreateJob = () => {
 
     const payload = {
       ...formData,
+      salary: parseInt(formData.salary),
       openingsLeft: parseInt(formData.openingsLeft),
       skills: formData.skills.split(',').map(skill => skill.trim())
     };
+
 
     try {
       const res = await fetch('http://localhost:3000/api/jobs/postJob', {
@@ -81,6 +84,14 @@ const CreateJob = () => {
           name="location"
           placeholder="Location"
           value={formData.location}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="number"
+          name="salary"
+          placeholder="Salary"
+          value={formData.salary}
           onChange={handleChange}
           required
         />

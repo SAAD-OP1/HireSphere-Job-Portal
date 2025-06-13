@@ -52,10 +52,15 @@ const EditProfile = () => {
       }
     }
 
+    const parsedBasicInfo = {
+      ...basicInfo,
+      age: basicInfo.age ? parseInt(basicInfo.age) : undefined
+    };
+
     const form = new FormData();
     form.append('introduction', introduction);
     form.append('skills', JSON.stringify(skills.split(',').map(s => s.trim())));
-    form.append('basicInfo', JSON.stringify(basicInfo));
+    form.append('basicInfo', JSON.stringify(parsedBasicInfo));
     form.append('experience', JSON.stringify(experience));
     if (image) form.append('image', image);
     if (resume) form.append('resume', resume);
@@ -77,6 +82,7 @@ const EditProfile = () => {
       setMessage('An error occurred. Try again.');
     }
   };
+
 
 
   return (

@@ -53,6 +53,8 @@ const SignIn = () => {
       const data = await res.json();
 
       if (res.ok && data.token) {
+        localStorage.setItem('token', data.token);
+        navigate(role === 'jobseeker' ? '/employee/my-profile' : '/employer/profile');
         login(data.token);
         navigate(role === 'jobseeker' ? '/employee/dashboard' : '/employer/dashboard');
       } else {

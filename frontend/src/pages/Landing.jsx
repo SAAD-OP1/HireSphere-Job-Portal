@@ -9,7 +9,7 @@ const Landing = () => {
   useEffect(() => {
     const role = getUserRole();
     if (role === "employee") {
-      navigate("/employee/dashboard");
+      navigate("/employee/my-profile");
     } else if (role === "employer") {
       navigate("/employer/dashboard");
     }

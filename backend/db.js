@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { number } = require('zod');
 mongoose.connect('mongodb+srv://syedsaadsharief:Saad1234.@cluster0.ovkea9k.mongodb.net/HireSphereDB')
 
 const employeeSchema = new mongoose.Schema({
@@ -39,17 +40,41 @@ const employeeSchema = new mongoose.Schema({
 });
 
 const employerSchema = new mongoose.Schema({
-    email: String,
-    password: String,
-    name: String,
-    companyName: String
+  email: String,
+  password: String,
+  name: String,
+  companyName: String,
+
+  image: {
+    type: String,
+    default: '',
+  },
+  description: {
+    type: String,
+    default: '',
+    maxlength: 1000,
+  },
+  website: {
+    type: String,
+    default: '',
+  },
+  location: {
+    type: String,
+    default: '',
+  },
+  industry: {
+    type: String,
+    default: '',
+  },
 });
+
 
 const jobSchema = new mongoose.Schema({
     title: String,
     company: String,
     industry: String,
     location: String,
+    salary: Number,
     postingDate: {
         type: Date,
         default: Date.now,

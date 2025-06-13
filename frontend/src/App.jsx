@@ -12,6 +12,8 @@ import EditApplication from './pages/EditApplication';
 import EditProfile from './pages/EditProfile';
 import ApplyToJob from './pages/ApplyToJob';
 import ViewProfile from './pages/ViewProfile';
+import ViewEmployerProfile from './pages/ViewEmployerProfile';
+import EditEmployerProfile from './pages/EditEmployerProfile';
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
         <Route path="/employer/dashboard" element={<EmployerDashboard />} />
         <Route path="/employer/create-job" element={<CreateJob />} />
         <Route path="/employer/view-applications/:jobId" element={<ViewApplications />} />
+        <Route path="/employer/profile" element={<ViewEmployerProfile />} />
+        <Route path="/employer/edit-profile" element={<EditEmployerProfile />} />
 
 
         {/* Employee Routes */}

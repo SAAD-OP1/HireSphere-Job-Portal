@@ -85,7 +85,7 @@ const SignUp = () => {
 
       if (res.ok && data.token) {
         localStorage.setItem('token', data.token);
-        navigate(role === 'jobseeker' ? '/employee/dashboard' : '/employer/dashboard');
+        navigate(role === 'jobseeker' ? '/employee/my-profile' : '/employer/profile');
       } else {
         setError(data.message || 'Signup failed. Please check your inputs.');
       }

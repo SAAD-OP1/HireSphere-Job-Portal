@@ -20,6 +20,7 @@ const jobSchema = z.object({
     company: z.string(),
     industry: z.string(),
     location: z.string(),
+    salary: z.number(),
     openingsLeft: z.number(),
     skills: z.array(z.string())
 });
@@ -49,24 +50,33 @@ router.post('/postJob', authMiddleware, isEmployer, async (req, res) => {
 });
 
 router.get('/viewJobs', authMiddleware, isEmployee, async (req, res) => {
-    try {
-      // Step 1: Get all applications by this employee
-      const applications = await Applications.find({ employeeID: req.user._id }).select('jobID');
-  
-      // Step 2: Extract job IDs
-      const appliedJobIds = applications.map(app => app.jobID.toString());
-  
-      // Step 3: Find jobs not in that list
-      const jobs = await Jobs.find({
-        _id: { $nin: appliedJobIds }
-      });
-  
-      res.json(jobs);
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Failed to fetch jobs' });
+  try {
+    const { salary, location } = req.query;
+
+    const applications = await Applications.find({ employeeID: req.user._id }).select('jobID');
+    const appliedJobIds = applications.map(app => app.jobID.toString());
+
+    // Build dynamic query
+    const query = {
+      _id: { $nin: appliedJobIds }
+    };
+
+    if (salary) {
+      query.salary = { $gte: parseInt(salary) }; // Show jobs with salary >= requested salary
     }
-  });
+
+    if (location) {
+      query.location = new RegExp(location, 'i'); // Case-insensitive partial match
+    }
+
+    const jobs = await Jobs.find(query);
+    res.json(jobs);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch jobs' });
+  }
+});
+
   
 
 router.get('/jobsPosted', authMiddleware, isEmployer, async (req, res) => {
