@@ -5,6 +5,8 @@ const { Applications, Jobs } = require('../db');
 const { z } = require('zod');
 const { isEmployer, isEmployee } = require('../middlewares/roleCheck');
 const { authMiddleware } = require('../middlewares/auth');
+const sendStatusUpdate = require('../utils/sendMail');
+
 const coverSchema = z.object({
     coverLetter: z.string().min(10).max(1000),
   });
@@ -87,36 +89,58 @@ router.get('/jobApplications/:jobId', authMiddleware, isEmployer, async (req, re
 });
 
 // PATCH /applications/:applicationId/status
+// PATCH /applications/:applicationId/status
 router.patch('/:applicationId/status', authMiddleware, isEmployer, async (req, res) => {
-    const { applicationId } = req.params;
-    const { status } = req.body;
-  
-    const validStatuses = ['Pending', 'Reviewed', 'Accepted', 'Rejected'];
-    if (!validStatuses.includes(status)) {
-      return res.status(400).json({ error: 'Invalid status value' });
+  const { applicationId } = req.params;
+  const { status } = req.body;
+
+  const validStatuses = ['Pending', 'Reviewed', 'Accepted', 'Rejected'];
+  if (!validStatuses.includes(status)) {
+    return res.status(400).json({ error: 'Invalid status value' });
+  }
+
+  try {
+    const application = await Applications.findById(applicationId)
+      .populate('jobID')
+      .populate('employeeID'); // include applicant info
+
+    if (!application) {
+      return res.status(404).json({ error: 'Application not found' });
     }
-  
-    try {
-      const application = await Applications.findById(applicationId).populate('jobID');
-  
-      if (!application) {
-        return res.status(404).json({ error: 'Application not found' });
-      }
-  
-      // Make sure the employer owns the job
-      if (application.jobID.createdBy.toString() !== req.user._id.toString()) {
-        return res.status(403).json({ error: 'Unauthorized to update this application' });
-      }
-  
-      application.status = status;
-      await application.save();
-  
-      res.json({ message: 'Application status updated', application });
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Server error while updating application status' });
+
+    // Make sure the employer owns the job
+    if (application.jobID.createdBy.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ error: 'Unauthorized to update this application' });
     }
+
+    application.status = status;
+    await application.save();
+
+    // Send email if employee info is available
+    const employee = application.employeeID;
+    if (employee && employee.email) {
+      const message = `
+Hi ${employee.name},
+
+Your application for the job "${application.jobID.title}" at ${application.jobID.company} has been updated.
+
+New Status: ${status}
+
+Thanks,
+HireSphere Team
+`;
+
+      await sendStatusUpdate(employee.email, 'Application Status Update', message);
+    }
+
+    res.json({ message: 'Application status updated and email sent', application });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error while updating application status' });
+  }
 });
+
   
 router.patch('/edit/:id', authMiddleware, isEmployee, async (req, res) => {
     const { coverLetter } = req.body;
