@@ -59,4 +59,16 @@
     cursor: pointer;
     height: fit-content;
   }
-  
+
+  .filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filters input,
+.filters button {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}

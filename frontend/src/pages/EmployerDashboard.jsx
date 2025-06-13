@@ -44,6 +44,7 @@ const EmployerDashboard = () => {
                 <p><strong>Company:</strong> {job.company}</p>
                 <p><strong>Industry:</strong> {job.industry}</p>
                 <p><strong>Location:</strong> {job.location}</p>
+                <p><strong>Salary:</strong> {job.salary}</p>
                 <p><strong>Openings Left:</strong> {job.openingsLeft}</p>
                 <p><strong>Skills:</strong> {job.skills.join(', ')}</p>
                 <p><strong>Posted On:</strong> {new Date(job.postingDate).toLocaleDateString()}</p>

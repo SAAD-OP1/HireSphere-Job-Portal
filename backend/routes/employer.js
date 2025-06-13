@@ -4,7 +4,10 @@ const { z } = require('zod');
 const jwt = require('jsonwebtoken');
 const { Employer } = require('../db');
 const { JWT_SECRET } = require('../config');
+const { authMiddleware } = require('../middlewares/auth');
 const { handleSignin } = require('../utils/auth');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 const employerSchema = z.object({
     email: z.string().email(),
@@ -33,6 +36,40 @@ router.post('/signup', async (req, res) => {
 
 router.post('/signin', async (req, res) => {
     await handleSignin(req, res, Employer, 'employer');
+});
+
+router.get('/me', authMiddleware, async (req, res) => {
+  try {
+    const employer = await Employer.findById(req.user._id).select('-password');
+    if (!employer) return res.status(404).json({ error: 'Employer not found' });
+    res.json(employer);
+  } catch (err) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// PATCH update employer profile
+const updateSchema = z.object({
+  description: z.string().max(1000).optional(),
+  website: z.string().url().optional().nullable(),
+  location: z.string().optional(),
+  industry: z.string().optional()
+});
+
+router.patch('/update-profile', authMiddleware, upload.single('image'), async (req, res) => {
+  try {
+    const validated = updateSchema.parse(req.body);
+    const update = { ...validated };
+
+    if (req.file) {
+      update.image = req.file.path;
+    }
+
+    const updated = await Employer.findByIdAndUpdate(req.user._id, update, { new: true });
+    res.json(updated);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 });
 
 module.exports = router;

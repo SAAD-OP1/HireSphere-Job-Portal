@@ -1,0 +1,48 @@
+.edit-employer-profile-container {
+  padding: 40px 20px;
+  max-width: 700px;
+  margin: auto;
+  font-family: Arial, sans-serif;
+}
+
+.edit-employer-profile-form {
+  background-color: #fcf8f8;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.edit-employer-profile-form h2 {
+  margin-bottom: 20px;
+  color: #1976d2;
+}
+
+.edit-employer-profile-form input,
+.edit-employer-profile-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.edit-employer-profile-form button {
+  background-color: #1976d2;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.edit-employer-profile-form button:hover {
+  background-color: #125a9c;
+}
+
+.success-message {
+  margin-bottom: 15px;
+  color: green;
+}
