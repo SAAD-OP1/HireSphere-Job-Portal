@@ -1,6 +1,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../pageStyles/SignUp.css';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+
+const getPasswordStrength = (password) => {
+  const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{8,}$/;
+  const mediumRegex = /^((?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,})$/;
+
+  if (password.length === 0) return '';
+  if (strongRegex.test(password)) return 'Strong';
+  if (mediumRegex.test(password)) return 'Medium';
+  return 'Weak';
+};
 
 const SignUp = () => {
   const [role, setRole] = useState('jobseeker');
@@ -13,11 +24,16 @@ const SignUp = () => {
     jobRole: '',
     companyName: ''
   });
-
+  const [showPassword, setShowPassword] = useState(false);
+  const [strength, setStrength] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    if(e.target.name === 'password') {
+      const strength = getPasswordStrength(e.target.value);
+      setStrength(strength);
+    }
   };
 
   const handleRoleSelect = (selectedRole) => {
@@ -31,6 +47,7 @@ const SignUp = () => {
       jobRole: '',
       companyName: ''
     });
+    setStrength(''); // reset password strength
   };
 
   const handleSubmit = async (e) => {
@@ -77,7 +94,18 @@ const SignUp = () => {
       console.error('Error:', error);
     }
   };
-
+  const getStrengthColor = () => {
+    switch (strength) {
+      case 'Weak':
+        return 'red';
+      case 'Medium':
+        return 'orange';
+      case 'Strong':
+        return 'green';
+      default:
+        return '';
+    }
+  };
   return (
     <div className="signup-container">
       <h2>Join as</h2>
@@ -108,14 +136,41 @@ const SignUp = () => {
           value={formData.email}
           onChange={handleChange}
         />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          required
-          value={formData.password}
-          onChange={handleChange}
-        />
+        <div className="password-field">
+  <div style={{ position: 'relative' }}>
+    <input
+      type={showPassword ? 'text' : 'password'}
+      name="password"
+      placeholder="Password"
+      required
+      value={formData.password}
+      onChange={handleChange}
+      style={{ paddingRight: '265px' }}
+    />
+    <span
+      onClick={() => setShowPassword(prev => !prev)}
+      style={{
+        position: 'absolute',
+        top: '50%',
+        right: '10px',
+        transform: 'translateY(-50%)',
+        cursor: 'pointer',
+        color: 'silver'
+      }}
+    >
+      {showPassword ? <FaEyeSlash /> : <FaEye />}
+    </span>
+  </div>
+
+  {strength && (
+    <p style={{ color: getStrengthColor(), marginTop: '4px', fontSize: '14px' }}>
+      Password Strength: <strong>{strength}</strong>
+    </p>
+  )}
+  <small className="password-hint">
+    <strong>Note:</strong> Password must be greater than 6 characters. To get a strong password, please include a capital letter (A-Z), a special character (!, @, #, etc.), and any digit (0-9).
+  </small>
+</div>
         <input
           type="text"
           name="name"
