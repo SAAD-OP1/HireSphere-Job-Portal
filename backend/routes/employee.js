@@ -93,35 +93,26 @@ const profileUpdateSchema = z.object({
   introduction: z.string().max(1000).optional(),
   skills: z.array(z.string()).optional(),
   basicInfo: z.object({
-    age: z.string().optional(),
-    yearsOfExperience: z.string().optional(),
-    phone: z.string().optional(),
-    ctc: z.string().optional(),
-    location: z.string().optional()
+    age: z.number().optional().nullable(),
+    highestQualification: z.string().optional().nullable(),
+    location: z.string().optional().nullable()
   }).optional(),
   experience: z.array(z.object({
-    company: z.string(),
-    role: z.string(),
-    duration: z.string()
+    role: z.string().min(1, "Role is required"),
+    company: z.string().min(1, "Company is required"),
+    duration: z.string().min(1, "Duration is required")
   })).optional()
 });
+
 
 router.patch('/update-profile', authMiddleware, upload.fields([
   { name: 'image', maxCount: 1 },
   { name: 'resume', maxCount: 1 }
 ]), async (req, res) => {
   try {
-    // Extract files safely
-    if (req.files) {
-      if (req.files.image) {
-        req.body.image = req.files.image[0].path;
-      }
-      if (req.files.resume) {
-        req.body.resume = req.files.resume[0].path;
-      }
-    }
+    if (req.files?.image) req.body.image = req.files.image[0].path;
+    if (req.files?.resume) req.body.resume = req.files.resume[0].path;
 
-    // Your existing parsing & updating logic
     const validated = profileUpdateSchema.parse({
       ...req.body,
       skills: req.body.skills ? JSON.parse(req.body.skills) : undefined,
@@ -136,8 +127,15 @@ router.patch('/update-profile', authMiddleware, upload.fields([
     const updated = await Employee.findByIdAndUpdate(req.user._id, update, { new: true });
     res.json(updated);
   } catch (err) {
-    console.error('Update profile error:', err.message);
-    res.status(400).json({ error: err.message });
+    console.error('Update profile error:', err);
+
+    if (err.errors) {
+      // Zod error
+      const messages = err.errors.map(e => `${e.path.join('.')}: ${e.message}`);
+      return res.status(400).json({ error: messages.join(', ') });
+    }
+
+    res.status(400).json({ error: err.message || 'Unexpected error' });
   }
 });
 

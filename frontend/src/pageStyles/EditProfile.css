@@ -52,3 +52,43 @@
   font-weight: bold;
   text-align: center;
 }
+.experience-entry {
+  background-color: #fde9e9;
+  padding: 15px;
+  margin-bottom: 15px;
+  border: 1px solid #fec8c8;
+  border-radius: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.experience-entry input {
+  flex: 1 1 30%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: black;
+}
+
+.experience-entry input::placeholder {
+  color: #aaa;
+}
+
+.delete-btn {
+  background-color: #ff5c5c;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  height: fit-content;
+  align-self: center;
+  margin-left: auto;
+  transition: background-color 0.2s ease;
+}
+
+.delete-btn:hover {
+  background-color: #e04848;
+}

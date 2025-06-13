@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../PageStyles/ViewProfile.css';
+import SkillBadge from '../Components/SkillBadge';
+import MissingField from '../Components/MissingField';
 
 const ViewProfile = () => {
   const [profile, setProfile] = useState(null);
@@ -20,77 +22,135 @@ const ViewProfile = () => {
   }, []);
 
   const calculateCompletion = (profile) => {
-    let fields = ['email', 'name', 'phoneNumber', 'jobRole', 'introduction', 'skills', 'image', 'resume'];
-    let filled = fields.filter(field => profile[field] && profile[field].length > 0).length;
-    return Math.floor((filled / fields.length) * 100);
-  };
+  const requiredFields = ['email','name','phoneNumber','jobRole','introduction','skills','image','resume','basicInfo','experience'];
+  let filled = 0;
+
+  for (let field of requiredFields) {
+    const value = profile[field];
+
+    if (field === 'skills' && Array.isArray(value)) {
+      // Count only if there's at least one non-empty skill
+      if (value.some(skill => skill && skill.trim() !== '')) filled++;
+    }
+
+    else if (field === 'basicInfo' && typeof value === 'object' && value !== null) {
+      // Require all 3: age, highestQualification, and location to be non-empty
+      if (
+        value.age !== null && value.age !== '' &&
+        value.highestQualification && value.highestQualification.trim() !== '' &&
+        value.location && value.location.trim() !== ''
+      ) {
+        filled++;
+      }
+    }
+
+    else if (field === 'experience' && Array.isArray(value)) {
+      // At least one experience with all fields filled
+      if (value.some(exp =>
+        exp.role && exp.role.trim() !== '' &&
+        exp.company && exp.company.trim() !== '' &&
+        exp.duration && exp.duration.trim() !== ''
+      )) {
+        filled++;
+      }
+    }
+
+    else if (typeof value === 'string' && value.trim() !== '') {
+      filled++;
+    }
+  }
+
+  return Math.floor((filled / requiredFields.length) * 100);
+};
+
+
 
   if (!profile) return <div>Loading...</div>;
 
   return (
     <div className="profile-container">
-      {/* Grid Layout */}
-      <div className="profile-grid">
-        
-        {/* Left Sidebar */}
-        <div className="left-panel">
-          {profile.image && (
-            <img
-              src={`http://localhost:3000/${profile.image}`}
-              alt="Profile"
-              className="profile-image"
-            />
-          )}
-          <h3>Introduction</h3>
-          <p>{profile.introduction || "N/A"}</p>
-          <h3>Skills</h3>
-          <p>{profile.skills?.join(', ') || "N/A"}</p>
-        </div>
+  <div className="profile-grid">
+    
+    {/* Left Sidebar */}
+    <div className="left-panel">
+      {profile.image && (
+        <img
+          src={`http://localhost:3000/${profile.image}`}
+          alt="Profile"
+          className="profile-image"
+        />
+      )}
+      <p><strong>Name:</strong> {profile.name}</p>
+      <h3>Introduction</h3>
+      <p>{profile.introduction || <MissingField />}</p>
+      <h3>Skills</h3>
+      <SkillBadge skills={profile.skills} />
+    </div>
 
-        {/* Center Content */}
-        <div className="center-panel">
-          <h2>Profile Information</h2>
-          <p><strong>Name:</strong> {profile.name}</p>
-          <p><strong>Email:</strong> {profile.email}</p>
-          <p><strong>Phone:</strong> {profile.phoneNumber}</p>
-          <p><strong>Location:</strong> {profile.basicInfo?.location || "N/A"}</p>
-          <p><strong>Age:</strong> {profile.basicInfo?.age || "N/A"}</p>
-          <p><strong>Job Role:</strong> {profile.jobRole || "N/A"}</p>
+    {/* Center Content */}
+    <div className="center-panel">
+      <h2>Profile Information</h2>
 
-          <h3>Experience</h3>
-          {profile.experience?.length > 0 ? (
-            profile.experience.map((exp, idx) => (
-              <div key={idx} className="experience-block">
-                <p><strong>Role:</strong> {exp.role}</p>
-                <p><strong>Company:</strong> {exp.company}</p>
-                <p><strong>Duration:</strong> {exp.duration}</p>
-              </div>
-            ))
-          ) : (
-            <p>No experience added yet.</p>
-          )}
-        </div>
-
-        {/* Right Sidebar */}
-        <div className="right-panel">
-          <button onClick={() => navigate('/employee/dashboard')}>View Job Postings</button>
-          <button onClick={() => navigate('/employee/my-applications')}>My Applications</button>
-        </div>
+      <div className="profile-line">
+        <p><strong>Highest Qualification:</strong> {profile.basicInfo?.highestQualification || <MissingField />}</p>
+        <p><strong>Job Role:</strong> {profile.jobRole || <MissingField />}</p>
+        <p><strong>Location:</strong> {profile.basicInfo?.location || <MissingField />}</p>
       </div>
 
-      {/* Bottom Section */}
-      <div className="bottom-section">
-        <div className="progress-container">
-          <p>Profile Completion: {calculateCompletion(profile)}%</p>
-          <div className="progress-bar">
-            <div className="progress" style={{ width: `${calculateCompletion(profile)}%` }}></div>
+      <div className="profile-line">
+        <p><strong>Age:</strong> {profile.basicInfo?.age || <MissingField />}</p>
+        <p><strong>Email:</strong> {profile.email}</p>
+        <p><strong>Phone:</strong> {profile.phoneNumber}</p>
+      </div>
+
+      <div className="profile-line">
+        {profile.resume ? (
+          <p>
+            <strong>Resume:</strong>{' '}
+            <a href={`http://localhost:3000/${profile.resume}`} target="_blank" rel="noopener noreferrer">
+              View Resume
+            </a>
+          </p>
+        ) : (
+          <p><strong>Resume:</strong> <MissingField /></p>
+        )}
+      </div>
+
+      <h3>Experience</h3>
+      {profile.experience?.length > 0 ? (
+        profile.experience.map((exp, idx) => (
+          <div key={idx} className="experience-block">
+            <p><strong>Role:</strong> {exp.role}</p>
+            <p><strong>Company:</strong> {exp.company}</p>
+            <p><strong>Duration:</strong> {exp.duration}</p>
           </div>
-        </div>
-        <button className="edit-button" onClick={() => navigate('/employee/edit-profile')}>
-          Edit Profile
-        </button>
+        ))
+      ) : (
+        <p>No experience added yet.</p>
+      )}
+    </div>
+
+    {/* Right Sidebar */}
+    <div className="right-panel">
+      <button onClick={() => navigate('/employee/dashboard')}>View Job Postings</button>
+      <button onClick={() => navigate('/employee/my-applications')}>My Applications</button>
+    </div>
+  </div>
+
+  {/* Bottom Section */}
+  <div className="bottom-section">
+    <div className="progress-container">
+      <p>Profile Completion: {calculateCompletion(profile)}%</p>
+      <div className="progress-bar">
+        <div className="progress" style={{ width: `${calculateCompletion(profile)}%` }}></div>
       </div>
     </div>
+    <button className="edit-button" onClick={() => navigate('/employee/edit-profile')}>
+      Edit Profile
+    </button>
+  </div>
+</div>
+
   
 );
 
