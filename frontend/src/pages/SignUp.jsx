@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../pageStyles/SignUp.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useAuth } from "../context/AuthContext";
 
 const getPasswordStrength = (password) => {
-  const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{8,}$/;
+  const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&.+=!]).{6,}$/;
   const mediumRegex = /^((?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,})$/;
 
   if (password.length === 0) return '';
@@ -24,6 +25,7 @@ const SignUp = () => {
     jobRole: '',
     companyName: ''
   });
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [strength, setStrength] = useState('');
   const navigate = useNavigate();
@@ -53,6 +55,11 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(''); // clear old error before new request
+
+    if (strength === 'Weak') {
+      setError('Password must be at least of medium strength.');
+      return;
+    }
 
     const endpoint = role === 'jobseeker'
       ? 'http://localhost:3000/api/employee/signup'
@@ -84,7 +91,7 @@ const SignUp = () => {
       const data = await res.json();
 
       if (res.ok && data.token) {
-        localStorage.setItem('token', data.token);
+        login(data.token);
         navigate(role === 'jobseeker' ? '/employee/my-profile' : '/employer/profile');
       } else {
         setError(data.message || 'Signup failed. Please check your inputs.');
@@ -94,6 +101,7 @@ const SignUp = () => {
       console.error('Error:', error);
     }
   };
+
   const getStrengthColor = () => {
     switch (strength) {
       case 'Weak':

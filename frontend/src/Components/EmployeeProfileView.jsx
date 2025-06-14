@@ -1,0 +1,61 @@
+import SkillBadge from '../Components/SkillBadge';
+import '../pageStyles/ViewProfile.css';
+
+const EmployeeProfileView = ({ profile }) => {
+
+  return (
+    <div className="profile-container">
+      <div className="profile-grid">
+        {/* Left Sidebar */}
+        <div className="left-panel">
+          <img src={`http://localhost:3000/${profile.image ? profile.image : 'uploads/default-profile.png'}`} alt="Profile" className="profile-image" />
+          <p><strong>Name:</strong> {profile.name}</p>
+          <h3>Introduction</h3>
+          <p>{profile.introduction || "N/A"}</p>
+          <h3>Skills</h3>
+          <SkillBadge skills={profile.skills}  readOnly={true} />
+        </div>
+
+        {/* Center Panel */}
+        <div className="center-panel">
+          <h2>Profile Information</h2>
+
+          <div className="profile-line">
+            <p><strong>Highest Qualification:</strong> {profile.basicInfo?.highestQualification || "N/A"}</p>
+            <p><strong>Job Role:</strong> {profile.jobRole || "N/A"}</p>
+            <p><strong>Location:</strong> {profile.basicInfo?.location || "N/A"}</p>
+          </div>
+
+          <div className="profile-line">
+            <p><strong>Age:</strong> {profile.basicInfo?.age || "N/A"}</p>
+            <p><strong>Email:</strong> {profile.email}</p>
+            <p><strong>Phone:</strong> {profile.phoneNumber}</p>
+          </div>
+
+          <div className="profile-line">
+            {profile.resume ? (
+              <p><strong>Resume:</strong> <a href={`http://localhost:3000/${profile.resume}`} target="_blank" rel="noopener noreferrer">View Resume</a></p>
+            ) : (
+              <p><strong>Resume:</strong> "N/A"</p>
+            )}
+          </div>
+
+          <h3>Experience</h3>
+          {profile.experience?.length > 0 ? (
+            profile.experience.map((exp, idx) => (
+              <div key={idx} className="experience-block">
+                <p><strong>Role:</strong> {exp.role}</p>
+                <p><strong>Company:</strong> {exp.company}</p>
+                <p><strong>Duration:</strong> {exp.duration}</p>
+              </div>
+            ))
+          ) : (
+            <p>No experience added yet.</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default EmployeeProfileView;

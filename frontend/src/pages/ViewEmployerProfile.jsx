@@ -27,11 +27,9 @@ const ViewEmployerProfile = () => {
       <div className="employer-profile-card">
 
         {/* Profile Image */}
-        {profile.image && (
-          <div className="employer-image-wrapper">
-            <img src={`http://localhost:3000/${profile.image}`} alt="Employer" className="employer-image" />
-          </div>
-        )}
+        <div className="employer-image-wrapper">
+          <img src={`http://localhost:3000/${profile.image ? profile.image : 'uploads/default-profile.png'}`} alt="Employer" className="employer-image" />
+        </div>
 
         <div className="employer-info">
           <h2>{profile.name}</h2>
