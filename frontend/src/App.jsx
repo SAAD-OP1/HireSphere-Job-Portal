@@ -14,6 +14,7 @@ import ApplyToJob from './pages/ApplyToJob';
 import ViewProfile from './pages/ViewProfile';
 import ViewEmployerProfile from './pages/ViewEmployerProfile';
 import EditEmployerProfile from './pages/EditEmployerProfile';
+import PublicProfile from './pages/PublicProfile';
 
 function App() {
   return (
@@ -23,6 +24,8 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
+
+        <Route path="/profile/:role/:id" element={<PublicProfile />} />
 
         {/* Employer Routes */}
         <Route path="/employer/dashboard" element={<EmployerDashboard />} />

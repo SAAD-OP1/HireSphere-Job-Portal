@@ -38,6 +38,17 @@ router.post('/signin', async (req, res) => {
     await handleSignin(req, res, Employer, 'employer');
 });
 
+router.get('/public/:id', async (req, res) => {
+  try {
+    const employer = await Employer.findById(req.params.id).select('-password');
+    if (!employer) return res.status(404).json({ error: 'Employer not found' });
+    res.json(employer);
+  } catch (err) {
+    console.error('Error fetching employer profile by ID:', err.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 router.get('/me', authMiddleware, async (req, res) => {
   try {
     const employer = await Employer.findById(req.user._id).select('-password');

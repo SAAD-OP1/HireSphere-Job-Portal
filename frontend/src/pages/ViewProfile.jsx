@@ -73,18 +73,16 @@ const ViewProfile = () => {
     
     {/* Left Sidebar */}
     <div className="left-panel">
-      {profile.image && (
-        <img
-          src={`http://localhost:3000/${profile.image}`}
-          alt="Profile"
-          className="profile-image"
-        />
-      )}
+      <img
+        src={`http://localhost:3000/${profile.image ? profile.image : 'uploads/default-profile.png'}`}
+        alt="Profile"
+        className="profile-image"
+      />
       <p><strong>Name:</strong> {profile.name}</p>
       <h3>Introduction</h3>
       <p>{profile.introduction || <MissingField />}</p>
       <h3>Skills</h3>
-      <SkillBadge skills={profile.skills} />
+      <SkillBadge skills={profile.skills}  readOnly={false} />
     </div>
 
     {/* Center Content */}

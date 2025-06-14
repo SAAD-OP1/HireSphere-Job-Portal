@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
-
+import ProfileLink from '../Components/ProfileLink';
 import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
@@ -9,7 +9,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
-    navigate("/signin");
+    navigate("/");
   }
 
   return (
@@ -25,7 +25,10 @@ const Navbar = () => {
             <Link to="/signup" className="btn">Sign Up</Link>
           </>
         ) : (
-          <button className="btn logout-btn" onClick={handleLogout}>Logout</button>
+          <>
+            <button className="btn logout-btn" onClick={handleLogout}>Logout</button>
+            <ProfileLink />
+          </>
         )}
       </div>
     </nav>

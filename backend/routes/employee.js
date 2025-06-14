@@ -89,6 +89,17 @@ router.get('/me', authMiddleware, async (req, res) => {
   }
 });
 
+router.get('/public/:id', async (req, res) => {
+  try {
+    const employee = await Employee.findById(req.params.id).select('-password');
+    if (!employee) return res.status(404).json({ error: 'Employee not found' });
+    res.json(employee);
+  } catch (err) {
+    console.error('Error fetching employee profile by ID:', err.message);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 const profileUpdateSchema = z.object({
   introduction: z.string().max(1000).optional(),
   skills: z.array(z.string()).optional(),

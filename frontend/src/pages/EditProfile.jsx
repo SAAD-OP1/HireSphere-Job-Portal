@@ -114,7 +114,7 @@ const EditProfile = () => {
           onChange={handleBasicInfoChange}
         />
         <input
-          type="text"
+          type="number"
           name="age"
           value={basicInfo.age}
           placeholder="Age"
