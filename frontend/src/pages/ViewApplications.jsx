@@ -11,7 +11,7 @@ const ViewApplications = () => {
   useEffect(() => {
     const fetchApplications = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/api/applications/jobApplications/${jobId}`, {
+        const res = await fetch(`https://hiresphere-job-portal.onrender.com/api/applications/jobApplications/${jobId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
           }
@@ -33,7 +33,7 @@ const ViewApplications = () => {
 
   const handleStatusChange = async (appId, newStatus) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/applications/${appId}/status`, {
+      const res = await fetch(`https://hiresphere-job-portal.onrender.com/api/applications/${appId}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

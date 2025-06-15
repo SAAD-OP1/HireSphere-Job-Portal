@@ -13,7 +13,7 @@ const EditProfile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:3000/api/employee/me', {
+      const res = await fetch('https://hiresphere-job-portal.onrender.com/api/employee/me', {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
@@ -66,7 +66,7 @@ const EditProfile = () => {
     if (resume) form.append('resume', resume);
 
     try {
-      const res = await fetch('http://localhost:3000/api/employee/update-profile', {
+      const res = await fetch('https://hiresphere-job-portal.onrender.com/api/employee/update-profile', {
         method: 'PATCH',
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         body: form

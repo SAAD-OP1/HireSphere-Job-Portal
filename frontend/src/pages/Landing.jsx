@@ -10,8 +10,8 @@ const Landing = () => {
     const fetchStats = async () => {
       try {
         const [jobsRes, seekersRes] = await Promise.all([
-          fetch('http://localhost:3000/api/jobs/stats/jobs-count'),
-          fetch('http://localhost:3000/api/employee/stats/employees-count')
+          fetch('https://hiresphere-job-portal.onrender.com/api/jobs/stats/jobs-count'),
+          fetch('https://hiresphere-job-portal.onrender.com/api/employee/stats/employees-count')
         ]);
 
         const jobsData = await jobsRes.json();

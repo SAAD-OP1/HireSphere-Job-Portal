@@ -10,7 +10,7 @@ const ViewEmployerProfile = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const res = await fetch('http://localhost:3000/api/employer/me', {
+      const res = await fetch('https://hiresphere-job-portal.onrender.com/api/employer/me', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
@@ -29,7 +29,7 @@ const ViewEmployerProfile = () => {
 
         {/* Profile Image */}
         <div className="employer-image-wrapper">
-          <img src={`http://localhost:3000/${profile.image ? profile.image : 'uploads/default-profile.png'}`} alt="Employer" className="employer-image" />
+          <img src={`https://hiresphere-job-portal.onrender.com/${profile.image ? profile.image : 'uploads/default-profile.png'}`} alt="Employer" className="employer-image" />
         </div>
 
         <div className="employer-info">

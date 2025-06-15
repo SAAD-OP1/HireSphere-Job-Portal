@@ -38,7 +38,7 @@ This is the frontend of the **HireSphere** job portal web application. It is bui
 Frontend will be available at:  
 `http://localhost:5173` (or whichever port your dev server starts on).
 
-> **Make sure your backend server is also running at `http://localhost:3000`.**
+> **Make sure your backend server is also running at `https://hiresphere-job-portal.onrender.com`.**
 
 ## 🔗 Environment Setup
 
@@ -46,7 +46,7 @@ Create a `.env` file if needed to store environment variables like base URLs (op
 
 Example:
 ```env
-VITE_BACKEND_URL=http://localhost:3000
+VITE_BACKEND_URL=https://hiresphere-job-portal.onrender.com
 ```
 
 ## 📁 Folder Structure

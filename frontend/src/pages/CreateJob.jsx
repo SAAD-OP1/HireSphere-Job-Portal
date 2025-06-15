@@ -30,7 +30,7 @@ const CreateJob = () => {
 
 
     try {
-      const res = await fetch('http://localhost:3000/api/jobs/postJob', {
+      const res = await fetch('https://hiresphere-job-portal.onrender.com/api/jobs/postJob', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -27,7 +27,7 @@ const PublicProfile = () => {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch(`http://localhost:3000/api/${role}/public/${id}`, {
+        const res = await fetch(`https://hiresphere-job-portal.onrender.com/api/${role}/public/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 

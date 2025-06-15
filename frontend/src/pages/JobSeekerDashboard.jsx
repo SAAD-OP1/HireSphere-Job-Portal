@@ -22,7 +22,7 @@ const JobSeekerDashboard = () => {
       if (filter.salary) params.append('salary', filter.salary);
       if (filter.location) params.append('location', filter.location);
 
-      const response = await fetch(`http://localhost:3000/api/jobs/viewJobs?${params.toString()}`, {
+      const response = await fetch(`https://hiresphere-job-portal.onrender.com/api/jobs/viewJobs?${params.toString()}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
 
@@ -89,8 +89,8 @@ const JobSeekerDashboard = () => {
                     <img
                       src={
                         job.createdBy?.image
-                          ? `http://localhost:3000/${job.createdBy.image}`
-                          : 'http://localhost:3000/uploads/default-profile.png'
+                          ? `https://hiresphere-job-portal.onrender.com/${job.createdBy.image}`
+                          : 'https://hiresphere-job-portal.onrender.com/uploads/default-profile.png'
                       }
                       alt="Company Logo"
                       className="job-company-logo"

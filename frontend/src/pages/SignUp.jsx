@@ -62,8 +62,8 @@ const SignUp = () => {
     }
 
     const endpoint = role === 'jobseeker'
-      ? 'http://localhost:3000/api/employee/signup'
-      : 'http://localhost:3000/api/employer/signup';
+      ? 'https://hiresphere-job-portal.onrender.com/api/employee/signup'
+      : 'https://hiresphere-job-portal.onrender.com/api/employer/signup';
 
     const payload =
       role === 'jobseeker'

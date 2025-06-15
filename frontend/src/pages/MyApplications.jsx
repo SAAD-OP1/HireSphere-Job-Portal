@@ -12,7 +12,7 @@ const MyApplications = () => {
       if (!token) return;
 
       try {
-        const res = await fetch('http://localhost:3000/api/applications/viewApplications', {
+        const res = await fetch('https://hiresphere-job-portal.onrender.com/api/applications/viewApplications', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -51,8 +51,8 @@ const MyApplications = () => {
                     <img
                       src={
                         job.createdBy?.image
-                          ? `http://localhost:3000/${job.createdBy.image}`
-                          : 'http://localhost:3000/uploads/default-profile.png'
+                          ? `https://hiresphere-job-portal.onrender.com/${job.createdBy.image}`
+                          : 'https://hiresphere-job-portal.onrender.com/uploads/default-profile.png'
                       }
 
                       alt="Employer Logo"

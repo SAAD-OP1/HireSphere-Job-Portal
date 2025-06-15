@@ -17,7 +17,7 @@ const ApplyToJob = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:3000/api/applications/apply/${id}`, {
+      const res = await fetch(`https://hiresphere-job-portal.onrender.com/api/applications/apply/${id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

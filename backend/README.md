@@ -56,7 +56,7 @@ Note: Make sure to use no spaces or single or double quotes in the above given t
 npm start
 ```
 
-The server will start on `http://localhost:3000`.
+The server will start on `https://hiresphere-job-portal.onrender.com`.
 ---
 
 ## 📄 Database Schemas

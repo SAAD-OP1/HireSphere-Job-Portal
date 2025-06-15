@@ -40,8 +40,8 @@ const SignIn = () => {
     }
 
     const endpoint = role === 'jobseeker'
-      ? 'http://localhost:3000/api/employee/signin'
-      : 'http://localhost:3000/api/employer/signin';
+      ? 'https://hiresphere-job-portal.onrender.com/api/employee/signin'
+      : 'https://hiresphere-job-portal.onrender.com/api/employer/signin';
 
     try {
       const res = await fetch(endpoint, {

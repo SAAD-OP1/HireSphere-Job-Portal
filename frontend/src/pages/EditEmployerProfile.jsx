@@ -15,7 +15,7 @@ const EditEmployerProfile = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const res = await fetch('http://localhost:3000/api/employer/me', {
+      const res = await fetch('https://hiresphere-job-portal.onrender.com/api/employer/me', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
@@ -48,7 +48,7 @@ const EditEmployerProfile = () => {
       form.append('image', image);
     }
 
-    const res = await fetch('http://localhost:3000/api/employer/update-profile', {
+    const res = await fetch('https://hiresphere-job-portal.onrender.com/api/employer/update-profile', {
       method: 'PATCH',
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`

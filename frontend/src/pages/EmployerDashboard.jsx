@@ -12,7 +12,7 @@ const EmployerDashboard = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const res = await fetch('http://localhost:3000/api/jobs/jobsPosted', {
+        const res = await fetch('https://hiresphere-job-portal.onrender.com/api/jobs/jobsPosted', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
@@ -45,7 +45,7 @@ const EmployerDashboard = () => {
             <div className="job-card-header">
               <a href={`/profile/employer/${job.createdBy?._id}`} target="_blank" rel="noopener noreferrer" className="company-name">
                   <img
-                    src={job.createdBy?.image ? `http://localhost:3000/${job.createdBy.image}` : 'http://localhost:3000/uploads/default-profile.png'}
+                    src={job.createdBy?.image ? `https://hiresphere-job-portal.onrender.com/${job.createdBy.image}` : 'https://hiresphere-job-portal.onrender.com/uploads/default-profile.png'}
                     alt="Company Logo"
                     className="job-company-logo"
                   />

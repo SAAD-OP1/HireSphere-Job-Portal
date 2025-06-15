@@ -8,7 +8,7 @@ const EmployeeProfileView = ({ profile }) => {
       <div className="profile-grid">
         {/* Left Sidebar */}
         <div className="left-panel">
-          <img src={`http://localhost:3000/${profile.image ? profile.image : 'uploads/default-profile.png'}`} alt="Profile" className="profile-image" />
+          <img src={`https://hiresphere-job-portal.onrender.com/${profile.image ? profile.image : 'uploads/default-profile.png'}`} alt="Profile" className="profile-image" />
           <p><strong>Name:</strong> {profile.name}</p>
           <h3>Introduction</h3>
           <p>{profile.introduction || "N/A"}</p>
@@ -43,7 +43,7 @@ const EmployeeProfileView = ({ profile }) => {
 
           <div className="profile-line">
             {profile.resume ? (
-              <p><strong>Resume:</strong> <a href={`http://localhost:3000/${profile.resume}`} target="_blank" rel="noopener noreferrer">View Resume</a></p>
+              <p><strong>Resume:</strong> <a href={`https://hiresphere-job-portal.onrender.com/${profile.resume}`} target="_blank" rel="noopener noreferrer">View Resume</a></p>
             ) : (
               <p><strong>Resume:</strong> N/A</p>
             )}

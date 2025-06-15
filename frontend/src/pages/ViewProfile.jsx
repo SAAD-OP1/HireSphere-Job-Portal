@@ -10,7 +10,7 @@ const ViewProfile = () => {
 
   useEffect(() => {
     async function fetchProfile() {
-      const res = await fetch('http://localhost:3000/api/employee/me', {
+      const res = await fetch('https://hiresphere-job-portal.onrender.com/api/employee/me', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -74,7 +74,7 @@ const ViewProfile = () => {
     {/* Left Sidebar */}
     <div className="left-panel">
       <img
-        src={`http://localhost:3000/${profile.image ? profile.image : 'uploads/default-profile.png'}`}
+        src={`https://hiresphere-job-portal.onrender.com/${profile.image ? profile.image : 'uploads/default-profile.png'}`}
         alt="Profile"
         className="profile-image"
       />
@@ -114,7 +114,7 @@ const ViewProfile = () => {
         {profile.resume ? (
           <p>
             <strong>Resume:</strong>{' '}
-            <a href={`http://localhost:3000/${profile.resume}`} target="_blank" rel="noopener noreferrer">
+            <a href={`https://hiresphere-job-portal.onrender.com/${profile.resume}`} target="_blank" rel="noopener noreferrer">
               View Resume
             </a>
           </p>
