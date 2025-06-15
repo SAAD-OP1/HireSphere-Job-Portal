@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const { number } = require('zod');
-mongoose.connect('mongodb+srv://syedsaadsharief:Saad1234.@cluster0.ovkea9k.mongodb.net/HireSphereDB')
+const { MONGO_URL } = require('./config'); 
+mongoose.connect(MONGO_URL)
 
 const employeeSchema = new mongoose.Schema({
   email: String,
@@ -42,9 +42,8 @@ const employeeSchema = new mongoose.Schema({
 const employerSchema = new mongoose.Schema({
   email: String,
   password: String,
-  name: String,
   companyName: String,
-
+  phoneNumber: String,
   image: {
     type: String,
     default: '',
@@ -79,7 +78,6 @@ const jobSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    openingsLeft: Number,
     skills: [String],
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'Employer' }  // New field
 });

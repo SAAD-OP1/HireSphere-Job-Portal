@@ -1,34 +1,91 @@
-.view-applications-container {
-    padding: 20px;
-    max-width: 1000px;
-    margin: auto;
-  }
-  
-  .application-card {
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    background-color: #f9f9f9;
-  }
-  
-  .job-info {
-    flex: 1;
-    margin-right: 20px;
-  }
-  
-  .applicant-info {
-    flex: 1;
-  }
-  
-  .status-controls {
-    margin-top: 10px;
-  }
-  
-  select {
-    padding: 6px;
-    font-size: 14px;
-  }
-  
+.applications-container {
+  padding: 30px;
+  max-width: 1000px;
+  margin: auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.applications-container h2 {
+  margin-bottom: 25px;
+  font-size: 26px;
+  color: #1976d2;
+  text-align: center;
+}
+
+.application-card {
+  background-color: #f9f9f9;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.applicant-info {
+  flex: 1;
+}
+
+.applicant-info p {
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+.application-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.view-profile-btn {
+  padding: 8px 16px;
+  background-color: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s ease;
+}
+
+.view-profile-btn:hover {
+  background-color: #135ba1;
+}
+
+.status-dropdown {
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-weight: bold;
+  background-color: #fff;
+}
+
+/* Color variations */
+.status-dropdown.pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-dropdown.reviewed {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.status-dropdown.accepted {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-dropdown.rejected {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  margin-top: 20px;
+}

@@ -40,11 +40,13 @@ npm install
 
 ## 🔧 Environment Setup
 
-Navigate to db.js and update the following line
+Create a .env file and fill the below details 
 ```
-mongoose.connect('Give DB URL')
+MONGO_URL=<YOUR MONGODB CONNECTION STRING/URL>
+JWT_SECRET=<YOUR_PASSWORD>
 ```
-by pasting your MongoDB Database URL.
+Note: Make sure to use no spaces or single or double quotes in the above given two lines.
+
 
 ---
 

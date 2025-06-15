@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../PageStyles/ViewProfile.css';
 import SkillBadge from '../Components/SkillBadge';
 import MissingField from '../Components/MissingField';
-
+import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt } from 'react-icons/fa';
 const ViewProfile = () => {
   const [profile, setProfile] = useState(null);
   const navigate = useNavigate();
@@ -92,13 +92,22 @@ const ViewProfile = () => {
       <div className="profile-line">
         <p><strong>Highest Qualification:</strong> {profile.basicInfo?.highestQualification || <MissingField />}</p>
         <p><strong>Job Role:</strong> {profile.jobRole || <MissingField />}</p>
-        <p><strong>Location:</strong> {profile.basicInfo?.location || <MissingField />}</p>
+        <p>
+          <FaMapMarkerAlt style={{ marginRight: '8px', color: '#555' }} />
+          {profile.location || <MissingField />}
+        </p>
       </div>
 
       <div className="profile-line">
         <p><strong>Age:</strong> {profile.basicInfo?.age || <MissingField />}</p>
-        <p><strong>Email:</strong> {profile.email}</p>
-        <p><strong>Phone:</strong> {profile.phoneNumber}</p>
+        <p>
+          <FaEnvelope style={{ marginRight: '8px', color: '#555' }} />
+          {profile.email}
+        </p>
+        <p>
+          <FaPhoneAlt style={{ marginRight: '8px', color: '#555' }} />
+          {profile.phoneNumber}
+        </p>
       </div>
 
       <div className="profile-line">

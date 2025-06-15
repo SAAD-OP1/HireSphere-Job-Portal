@@ -8,12 +8,17 @@ const path = require('path');
 
 app.use(cors());
 app.use(express.json());
+
 const uploadsPath = path.join(__dirname, '../uploads');  // adjust if necessary
 app.use('/uploads', express.static(uploadsPath));
 app.use('/api', router);
 
 mongoose.connect(MONGO_URL)
-    .then(() => console.log('Connected to DB'))
-    .catch(err => console.error(err));
-
-app.listen(3000, () => console.log('Server started on port 3000'));
+  .then(() => {
+    console.log('Connected to DB');
+    app.listen(3000, () => console.log('Server started on port 3000'));
+  })
+  .catch(err => {
+    console.log('Failed to connect to DB', err);
+    process.exit(1); // optional: exit process if DB fails
+  });

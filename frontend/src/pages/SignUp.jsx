@@ -77,8 +77,8 @@ const SignUp = () => {
         : {
             email: formData.email,
             password: formData.password,
-            name: formData.name,
-            companyName: formData.companyName
+            companyName: formData.companyName,
+            phoneNumber: formData.phoneNumber
           };
 
     try {
@@ -179,17 +179,17 @@ const SignUp = () => {
     <strong>Note:</strong> Password must be greater than 6 characters. To get a strong password, please include a capital letter (A-Z), a special character (!, @, #, etc.), and any digit (0-9).
   </small>
 </div>
-        <input
-          type="text"
-          name="name"
-          placeholder="Full Name"
-          required
-          value={formData.name}
-          onChange={handleChange}
-        />
 
         {role === 'jobseeker' && (
           <>
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              required
+              value={formData.name}
+              onChange={handleChange}
+            />
             <input
               type="text"
               name="phoneNumber"
@@ -210,14 +210,25 @@ const SignUp = () => {
         )}
 
         {role === 'recruiter' && (
-          <input
-            type="text"
-            name="companyName"
-            placeholder="Company Name"
-            required
-            value={formData.companyName}
-            onChange={handleChange}
-          />
+          <>
+            <input
+              type="text"
+              name="companyName"
+              placeholder="Company Name"
+              required
+              value={formData.companyName}
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name="phoneNumber"
+              placeholder="Phone Number"
+              required
+              value={formData.phoneNumber}
+              onChange={handleChange}
+            />
+          </>
+          
         )}
 
         <button type="submit" className="submit-btn">Sign Up</button>

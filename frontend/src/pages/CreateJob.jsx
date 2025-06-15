@@ -9,7 +9,6 @@ const CreateJob = () => {
     industry: '',
     location: '',
     salary: '',
-    openingsLeft: '',
     skills: ''
   });
 
@@ -26,7 +25,6 @@ const CreateJob = () => {
     const payload = {
       ...formData,
       salary: parseInt(formData.salary),
-      openingsLeft: parseInt(formData.openingsLeft),
       skills: formData.skills.split(',').map(skill => skill.trim())
     };
 
@@ -92,14 +90,6 @@ const CreateJob = () => {
           name="salary"
           placeholder="Salary"
           value={formData.salary}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="number"
-          name="openingsLeft"
-          placeholder="Openings Left"
-          value={formData.openingsLeft}
           onChange={handleChange}
           required
         />

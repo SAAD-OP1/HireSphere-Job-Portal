@@ -1,11 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
-const { Applications, Jobs } = require('../db');
+const { Applications, Jobs, Employer } = require('../db');
 const { z } = require('zod');
 const { isEmployer, isEmployee } = require('../middlewares/roleCheck');
 const { authMiddleware } = require('../middlewares/auth');
-const sendStatusUpdate = require('../utils/sendMail');
+//const sendStatusUpdate = require('../utils/sendMail');
 
 const coverSchema = z.object({
     coverLetter: z.string().min(10).max(1000),
@@ -54,8 +54,14 @@ const coverSchema = z.object({
 router.get('/viewApplications', authMiddleware, isEmployee, async (req, res) => {
     try {
       const applications = await Applications.find({ employeeID: req.user._id })
-        .populate('jobID', 'title company location postingDate') // select only a few fields
-        .exec();
+      .populate({
+        path: 'jobID',
+        select: 'title company location postingDate createdBy',
+        populate: {
+          path: 'createdBy',
+          select: 'name companyName image',
+        }
+      });
   
       res.json({ applications });
     } catch (err) {
@@ -69,7 +75,9 @@ router.get('/jobApplications/:jobId', authMiddleware, isEmployer, async (req, re
   const { jobId } = req.params;
 
   try {
-    const applications = await Applications.find({ jobID: jobId })
+    const applications = await Applications.find({
+      jobID: jobId,
+      status: { $nin: ['Accepted', 'Rejected'] }})
       .populate({
         path: 'jobID',
         match: { createdBy: req.user._id }, // ensure the job belongs to this employer
@@ -88,7 +96,6 @@ router.get('/jobApplications/:jobId', authMiddleware, isEmployer, async (req, re
   }
 });
 
-// PATCH /applications/:applicationId/status
 // PATCH /applications/:applicationId/status
 router.patch('/:applicationId/status', authMiddleware, isEmployer, async (req, res) => {
   const { applicationId } = req.params;
@@ -117,21 +124,21 @@ router.patch('/:applicationId/status', authMiddleware, isEmployer, async (req, r
     await application.save();
 
     // Send email if employee info is available
-    const employee = application.employeeID;
-    if (employee && employee.email) {
-      const message = `
-Hi ${employee.name},
+//     const employee = application.employeeID;
+//     if (employee && employee.email) {
+//       const message = `
+// Hi ${employee.name},
 
-Your application for the job "${application.jobID.title}" at ${application.jobID.company} has been updated.
+// Your application for the job "${application.jobID.title}" at ${application.jobID.company} has been updated.
 
-New Status: ${status}
+// New Status: ${status}
 
-Thanks,
-HireSphere Team
-`;
+// Thanks,
+// HireSphere Team
+// `;
 
-      await sendStatusUpdate(employee.email, 'Application Status Update', message);
-    }
+//       await sendStatusUpdate(employee.email, 'Application Status Update', message);
+//     }
 
     res.json({ message: 'Application status updated and email sent', application });
 
