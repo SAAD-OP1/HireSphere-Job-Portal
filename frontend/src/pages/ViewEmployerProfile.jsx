@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../pageStyles/ViewEmployerProfile.css';
 import MissingField from '../Components/MissingField';
+import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt, FaGlobe } from 'react-icons/fa';
 
 const ViewEmployerProfile = () => {
   const [profile, setProfile] = useState(null);
@@ -32,17 +33,34 @@ const ViewEmployerProfile = () => {
         </div>
 
         <div className="employer-info">
-          <h2>{profile.name}</h2>
-          <p><strong>Email:</strong> {profile.email}</p>
-          <p><strong>Company:</strong> {profile.companyName}</p>
-          <p><strong>Industry:</strong> {profile.industry || <MissingField />}</p>
-          <p><strong>Location:</strong> {profile.location || <MissingField />}</p>
-          <p><strong>Website:</strong> {profile.website ? (
-            <a href={profile.website} target="_blank" rel="noopener noreferrer">{profile.website}</a>
-          ) : <MissingField />}</p>
-          <p><strong>Description:</strong> {profile.description || <MissingField />}</p>
+          <h2>{profile.companyName}</h2>
+          <p>
+            <FaEnvelope style={{ marginRight: '8px', color: '#555' }} />
+            {profile.email}
+          </p>
+          <p>
+            <FaPhoneAlt style={{ marginRight: '8px', color: '#555' }} />
+            {profile.phoneNumber}
+          </p>
+          <p>
+            <FaMapMarkerAlt style={{ marginRight: '8px', color: '#555' }} />
+            {profile.location || <MissingField />}
+          </p>
+          <p>
+            <FaGlobe style={{ marginRight: '8px', color: '#555' }} />
+            {profile.website ? (
+              <a href={profile.website} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#1976d2' }}>
+                {profile.website}
+              </a>
+            ) : <MissingField />}
+          </p>
+          <p>
+            <strong>Industry:</strong> {profile.industry || <MissingField />}
+          </p>
+          <p>
+            <strong>Description:</strong> {profile.description || <MissingField />}
+          </p>
         </div>
-
         <div className="edit-employer-button">
           <button onClick={() => navigate('/employer/dashboard')}>Go to Dashboard</button>
           <br></br>

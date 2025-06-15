@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../pageStyles/EmployerDashboard.css';
+import { FaMapMarkerAlt } from 'react-icons/fa';
+import { FaRupeeSign } from 'react-icons/fa';
+import SkillBadge from '../Components/SkillBadge';
 
 const EmployerDashboard = () => {
   const [jobs, setJobs] = useState([]);
@@ -37,27 +40,56 @@ const EmployerDashboard = () => {
         <p className="no-jobs">You haven't posted any jobs yet.</p>
       ) : (
         <div className="job-list">
-          {jobs.map((job, index) => (
-            <div key={index} className="job-card">
-              <div className="job-info">
-                <h3>{job.title}</h3>
-                <p><strong>Company:</strong> {job.company}</p>
-                <p><strong>Industry:</strong> {job.industry}</p>
-                <p><strong>Location:</strong> {job.location}</p>
-                <p><strong>Salary:</strong> {job.salary}</p>
-                <p><strong>Openings Left:</strong> {job.openingsLeft}</p>
-                <p><strong>Skills:</strong> {job.skills.join(', ')}</p>
-                <p><strong>Posted On:</strong> {new Date(job.postingDate).toLocaleDateString()}</p>
+        {jobs.map((job, index) => (
+          <div key={index} className="job-card">
+            <div className="job-card-header">
+              <a href={`/profile/employer/${job.createdBy?._id}`} target="_blank" rel="noopener noreferrer" className="company-name">
+                  <img
+                    src={job.createdBy?.image ? `http://localhost:3000/${job.createdBy.image}` : 'http://localhost:3000/uploads/default-profile.png'}
+                    alt="Company Logo"
+                    className="job-company-logo"
+                  />
+                </a>
+                <div className="job-header-info">
+                  <h3 className="job-title">{job.title}</h3>
+                  <a
+                    href={`/profile/employer/${job.createdBy?._id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="company-name"
+                  >
+                    {job.company}
+                  </a>
+
+                  <div className="job-meta-icons">
+                    <div className="icon-item">
+                      <FaMapMarkerAlt style={{ color: '#555', marginRight: '5px' }} />
+                      {job.location}
+                    </div>
+                    <div className="icon-item">
+                      <FaRupeeSign style={{ color: '#555', marginRight: '5px' }} />
+                      {job.salary}
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="job-actions">
-                <button 
-                  onClick={() => navigate(`/employer/view-applications/${job._id}`)} 
-                  className="view-app-btn">View Applications
-                </button>
-              </div>
+
+            <p className="industry">{job.industry}</p>
+            <p className="posted">Posted on: {new Date(job.postingDate).toLocaleDateString()}</p>
+
+            <div className="job-footer">
+              <SkillBadge skills={job.skills} readOnly={true} />
+              <button
+                className="view-app-btn"
+                onClick={() => navigate(`/employer/view-applications/${job._id}`)}
+              >
+                View Applications
+              </button>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
+      </div>
+
       )}
     </div>
   );

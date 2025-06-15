@@ -3,7 +3,6 @@ import '../pageStyles/EditEmployerProfile.css';
 
 const EditEmployerProfile = () => {
   const [formData, setFormData] = useState({
-    name: '',
     companyName: '',
     email: '',
     description: '',
@@ -23,9 +22,9 @@ const EditEmployerProfile = () => {
       });
       const data = await res.json();
       setFormData({
-        name: data.name || '',
         companyName: data.companyName || '',
         email: data.email || '',
+        phoneNumber: data.phoneNumber || '',
         description: data.description || '',
         website: data.website || '',
         location: data.location || '',
@@ -61,23 +60,15 @@ const EditEmployerProfile = () => {
     if (res.ok) {
       setMessage('Profile updated successfully!');
     } else {
-      setMessage(data.error || 'Update failed.');
+      setMessage('Update failed.');
     }
   };
 
   return (
     <div className="edit-employer-profile-container">
       <h2>Edit Employer Profile</h2>
-      {message && <p className="status-message">{message}</p>}
+      {message && <p className="success-message">{message}</p>}
       <form className="edit-employer-profile-form" onSubmit={handleSubmit} encType="multipart/form-data">
-        <input
-          type="text"
-          name="name"
-          placeholder="Full Name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
         <input
           type="text"
           name="companyName"
@@ -94,18 +85,11 @@ const EditEmployerProfile = () => {
           onChange={handleChange}
           required
         />
-        <textarea
-          name="description"
-          placeholder="Company Description"
-          value={formData.description}
-          onChange={handleChange}
-          rows={4}
-        />
         <input
           type="text"
-          name="website"
-          placeholder="Company Website"
-          value={formData.website}
+          name="phone"
+          placeholder="Phone Number"
+          value={formData.phoneNumber}
           onChange={handleChange}
         />
         <input
@@ -117,10 +101,24 @@ const EditEmployerProfile = () => {
         />
         <input
           type="text"
+          name="website"
+          placeholder="Company Website"
+          value={formData.website}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
           name="industry"
           placeholder="Industry"
           value={formData.industry}
           onChange={handleChange}
+        />
+        <textarea
+          name="description"
+          placeholder="Company Description"
+          value={formData.description}
+          onChange={handleChange}
+          rows={4}
         />
         <label>Upload Logo / Image</label>
         <input

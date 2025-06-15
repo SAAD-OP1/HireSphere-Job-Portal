@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../pageStyles/JobSeekerDashboard.css';
+import { FaMapMarkerAlt } from 'react-icons/fa';
+import { FaRupeeSign } from 'react-icons/fa';
+import SkillBadge from '../Components/SkillBadge';
 
 const JobSeekerDashboard = () => {
   const [jobs, setJobs] = useState([]);
@@ -52,6 +55,7 @@ const JobSeekerDashboard = () => {
           View My Applications
         </button>
       </div>
+
       <div className="filters">
         <input
           type="number"
@@ -76,19 +80,56 @@ const JobSeekerDashboard = () => {
         ) : (
           jobs.map((job) => (
             <div className="job-card" key={job._id}>
-              <div className="job-details">
-                <h3>{job.title}</h3>
-                <p><strong>Company:</strong> {job.company}</p>
-                <p><strong>Industry:</strong> {job.industry}</p>
-                <p><strong>Location:</strong> {job.location}</p>
-                <p><strong>Salary:</strong> {job.salary}</p>
-                <p><strong>Openings Left:</strong> {job.openingsLeft}</p>
-                <p><strong>Skills:</strong> {job.skills.join(', ')}</p>
-                <p><strong>Posted on:</strong> {new Date(job.postingDate).toLocaleDateString()}</p>
+              <div className="job-card-header">
+                <a
+                    href={`/profile/employer/${job.createdBy?._id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src={
+                        job.createdBy?.image
+                          ? `http://localhost:3000/${job.createdBy.image}`
+                          : 'http://localhost:3000/uploads/default-profile.png'
+                      }
+                      alt="Company Logo"
+                      className="job-company-logo"
+                    />
+                  </a>
+                <div className="job-header-info">
+                  <h3 className="job-title">{job.title}</h3>
+                  <a
+                    href={`/profile/employer/${job.createdBy?._id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="company-name"
+                  >
+                    {job.company}
+                  </a>
+
+                  <div className="job-meta-icons">
+                    <div className="icon-item">
+                      <FaMapMarkerAlt style={{ color: '#555', marginRight: '5px' }} />
+                      {job.location}
+                    </div>
+                    <div className="icon-item">
+                      <FaRupeeSign style={{ color: '#555', marginRight: '5px' }} />
+                      {job.salary}
+                    </div>
+                  </div>
+                </div>
               </div>
-              <button className="apply-btn" onClick={() => handleApply(job._id)}>
-                Apply
-              </button>
+
+              <div className="job-card-body">
+                <p><strong>Industry:</strong> {job.industry}</p>
+                <p><strong>Posted on:</strong> {new Date(job.postingDate).toLocaleDateString()}</p>
+                <div className="job-footer">
+                  <SkillBadge skills={job.skills} readOnly={true} />
+                  <button className="apply-btn" onClick={() => handleApply(job._id)}>
+                    Apply
+                  </button>
+                </div>
+              </div>
             </div>
           ))
         )}

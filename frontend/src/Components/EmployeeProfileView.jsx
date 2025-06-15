@@ -1,6 +1,6 @@
 import SkillBadge from '../Components/SkillBadge';
 import '../pageStyles/ViewProfile.css';
-
+import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt } from 'react-icons/fa';
 const EmployeeProfileView = ({ profile }) => {
 
   return (
@@ -23,20 +23,29 @@ const EmployeeProfileView = ({ profile }) => {
           <div className="profile-line">
             <p><strong>Highest Qualification:</strong> {profile.basicInfo?.highestQualification || "N/A"}</p>
             <p><strong>Job Role:</strong> {profile.jobRole || "N/A"}</p>
-            <p><strong>Location:</strong> {profile.basicInfo?.location || "N/A"}</p>
+            <p>
+              <FaMapMarkerAlt style={{ marginRight: '8px', color: '#555' }} />
+              {profile.location || "N/A"}
+            </p>
           </div>
 
           <div className="profile-line">
             <p><strong>Age:</strong> {profile.basicInfo?.age || "N/A"}</p>
-            <p><strong>Email:</strong> {profile.email}</p>
-            <p><strong>Phone:</strong> {profile.phoneNumber}</p>
+            <p>
+              <FaEnvelope style={{ marginRight: '8px', color: '#555' }} />
+              {profile.email}
+            </p>
+            <p>
+              <FaPhoneAlt style={{ marginRight: '8px', color: '#555' }} />
+              {profile.phoneNumber}
+            </p>
           </div>
 
           <div className="profile-line">
             {profile.resume ? (
               <p><strong>Resume:</strong> <a href={`http://localhost:3000/${profile.resume}`} target="_blank" rel="noopener noreferrer">View Resume</a></p>
             ) : (
-              <p><strong>Resume:</strong> "N/A"</p>
+              <p><strong>Resume:</strong> N/A</p>
             )}
           </div>
 

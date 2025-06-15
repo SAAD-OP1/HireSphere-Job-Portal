@@ -1,5 +1,6 @@
-// config.js
+require('dotenv').config();
+
 module.exports = {
-  MONGO_URL: 'mongodb+srv://syedsaadsharief:Saad1234.@cluster0.ovkea9k.mongodb.net/HireSphereDB',
-  JWT_SECRET: 'hello'
+  MONGO_URL: process.env.MONGO_URL,
+  JWT_SECRET: process.env.JWT_SECRET
 };

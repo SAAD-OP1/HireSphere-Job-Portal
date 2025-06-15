@@ -21,7 +21,6 @@ const jobSchema = z.object({
     industry: z.string(),
     location: z.string(),
     salary: z.number(),
-    openingsLeft: z.number(),
     skills: z.array(z.string())
 });
 
@@ -69,7 +68,9 @@ router.get('/viewJobs', authMiddleware, isEmployee, async (req, res) => {
       query.location = new RegExp(location, 'i'); // Case-insensitive partial match
     }
 
-    const jobs = await Jobs.find(query);
+    const jobs = await Jobs.find(query)
+    .populate('createdBy', 'image') // Only select needed fields
+    .exec();
     res.json(jobs);
   } catch (err) {
     console.error(err);
@@ -80,7 +81,9 @@ router.get('/viewJobs', authMiddleware, isEmployee, async (req, res) => {
   
 
 router.get('/jobsPosted', authMiddleware, isEmployer, async (req, res) => {
-    const jobs = await Jobs.find({ createdBy: req.user._id });
+    const jobs = await Jobs.find({ createdBy: req.user._id })
+    .populate('createdBy', 'image') // Only select needed fields
+    .exec();
     res.json(jobs);
 });
 

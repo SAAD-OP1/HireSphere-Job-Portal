@@ -58,11 +58,13 @@ cd backend
 npm install
 ```
 
-Navigate to db.js and update the following line
-```bash
-mongoose.connect('Give DB URL')
+Create a .env file and fill the below details 
 ```
-by pasting your MongoDB Database URL.
+MONGO_URL=<YOUR MONGODB CONNECTION STRING/URL>
+JWT_SECRET=<YOUR_PASSWORD>
+```
+
+Note: Make sure to use no spaces or single or double quotes in the above given two lines.
 
 - Start the backend server:
 

@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../pageStyles/MyApplications.css';
 
 const MyApplications = () => {
   const [applications, setApplications] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchApplications = async () => {
@@ -33,20 +35,46 @@ const MyApplications = () => {
   return (
     <div className="applications-container">
       <h2>My Applications</h2>
+
       {applications.length === 0 ? (
-        <p>You haven’t applied to any jobs yet.</p>
+        <p>You haven't applied to any jobs yet.</p>
       ) : (
         <div className="applications-list">
-          {applications.map((app) => (
-            <div key={app._id} className="application-card">
-              <h3>{app.title}</h3>
-              <p><strong>Title:</strong> {app.jobID?.title}</p>
-              <p><strong>Company:</strong> {app.jobID?.company}</p>
-              <p><strong>Location:</strong> {app.jobID?.location}</p>
-              <p><strong>Posted on:</strong> {app.jobID?.postingDate ? new Date(app.jobID.postingDate).toLocaleDateString() : 'N/A'}</p>
-              <p><strong>Status:</strong> {app.status}</p>
-            </div>
-          ))}
+          {applications.map((app) => {
+            const job = app.jobID;
+            const employer = job?.createdBy;
+
+            return (
+              <div key={app._id} className="application-card">
+                <div className="application-header">
+                  <div className="employer-logo">
+                    <img
+                      src={
+                        job.createdBy?.image
+                          ? `http://localhost:3000/${job.createdBy.image}`
+                          : 'http://localhost:3000/uploads/default-profile.png'
+                      }
+
+                      alt="Employer Logo"
+                      onClick={() => navigate(`/profile/employer/${employer?._id}`)}
+                    />
+                  </div>
+                  <div className="job-details">
+                    <h3>{job?.title}</h3>
+                    <p className="company-name">
+                      <strong onClick={() => navigate(`/profile/employer/${employer?._id}`)}>{job?.company}</strong>
+                    </p>
+                    <p><strong>Location:</strong> {job?.location}</p>
+                    <p><strong>Posted:</strong> {new Date(job?.postingDate).toLocaleDateString()}</p>
+                  </div>
+                </div>
+
+                <div className="application-status">
+                  <p><strong>Status:</strong> <span className={`status ${app.status.toLowerCase()}`}>{app.status}</span></p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

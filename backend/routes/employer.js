@@ -12,8 +12,9 @@ const upload = multer({ dest: 'uploads/' });
 const employerSchema = z.object({
     email: z.string().email(),
     password: z.string().min(6),
-    name: z.string(),
     companyName: z.string(),
+    phoneNumber: z.string()
+      .regex(/^\d{10}$/, { message: "Phone number must be exactly 10 digits" }),
 });
 
 router.post('/signup', async (req, res) => {
@@ -62,7 +63,7 @@ router.get('/me', authMiddleware, async (req, res) => {
 // PATCH update employer profile
 const updateSchema = z.object({
   description: z.string().max(1000).optional(),
-  website: z.string().url().optional().nullable(),
+  website: z.preprocess(val => val === '' ? undefined : val, z.string().url().optional()),
   location: z.string().optional(),
   industry: z.string().optional()
 });
