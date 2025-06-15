@@ -25,7 +25,7 @@ const EmployeeProfileView = ({ profile }) => {
             <p><strong>Job Role:</strong> {profile.jobRole || "N/A"}</p>
             <p>
               <FaMapMarkerAlt style={{ marginRight: '8px', color: '#555' }} />
-              {profile.location || "N/A"}
+              {profile.basicInfo?.location || "N/A"}
             </p>
           </div>
 
