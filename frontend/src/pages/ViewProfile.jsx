@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../PageStyles/ViewProfile.css';
+import '../pageStyles/ViewProfile.css';
 import SkillBadge from '../Components/SkillBadge';
 import MissingField from '../Components/MissingField';
 import { FaEnvelope, FaPhoneAlt, FaMapMarkerAlt } from 'react-icons/fa';
