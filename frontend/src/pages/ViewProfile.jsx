@@ -94,7 +94,7 @@ const ViewProfile = () => {
         <p><strong>Job Role:</strong> {profile.jobRole || <MissingField />}</p>
         <p>
           <FaMapMarkerAlt style={{ marginRight: '8px', color: '#555' }} />
-          {profile.location || <MissingField />}
+          {profile.basicInfo?.location || <MissingField />}
         </p>
       </div>
 
