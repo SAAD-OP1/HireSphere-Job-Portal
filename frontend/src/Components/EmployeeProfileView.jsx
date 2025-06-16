@@ -8,7 +8,7 @@ const EmployeeProfileView = ({ profile }) => {
       <div className="profile-grid">
         {/* Left Sidebar */}
         <div className="left-panel">
-          <img src={`https://hiresphere-job-portal.onrender.com/${profile.image ? profile.image : 'uploads/default-profile.png'}`} alt="Profile" className="profile-image" />
+          <img src={profile.image || 'https://res.cloudinary.com/duomt9kpq/image/upload/v1750055427/default-profile_v574t9.jpg'} alt="Profile" className="profile-image" />
           <p><strong>Name:</strong> {profile.name}</p>
           <h3>Introduction</h3>
           <p>{profile.introduction || "N/A"}</p>

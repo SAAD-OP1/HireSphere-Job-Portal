@@ -50,11 +50,8 @@ const MyApplications = () => {
                   <div className="employer-logo">
                     <img
                       src={
-                        job.createdBy?.image
-                          ? `https://hiresphere-job-portal.onrender.com/${job.createdBy.image}`
-                          : 'https://hiresphere-job-portal.onrender.com/uploads/default-profile.png'
+                        job.createdBy.image || 'https://res.cloudinary.com/duomt9kpq/image/upload/v1750055427/default-profile_v574t9.jpg'
                       }
-
                       alt="Employer Logo"
                       onClick={() => navigate(`/profile/employer/${employer?._id}`)}
                     />

@@ -74,7 +74,7 @@ const ViewProfile = () => {
     {/* Left Sidebar */}
     <div className="left-panel">
       <img
-        src={`https://hiresphere-job-portal.onrender.com/${profile.image ? profile.image : 'uploads/default-profile.png'}`}
+        src={profile.image || 'https://res.cloudinary.com/<cloud_name>/image/upload/v123/default-profile.png'}
         alt="Profile"
         className="profile-image"
       />
@@ -114,7 +114,7 @@ const ViewProfile = () => {
         {profile.resume ? (
           <p>
             <strong>Resume:</strong>{' '}
-            <a href={`https://hiresphere-job-portal.onrender.com/${profile.resume}`} target="_blank" rel="noopener noreferrer">
+            <a href={profile.resume} target="_blank" rel="noopener noreferrer">
               View Resume
             </a>
           </p>
