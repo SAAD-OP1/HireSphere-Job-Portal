@@ -1,12 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const multer = require('multer');
 const { z } = require('zod');
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
+
 const { Employee } = require('../db');
-const { authMiddleware } = require('../middlewares/auth');
 const { JWT_SECRET } = require('../config');
+const { authMiddleware } = require('../middlewares/auth');
 const { handleSignin } = require('../utils/auth');
+const { imageStorage, resumeStorage } = require('../utils/cloudinary'); // ✅ FIXED
+
 const uploadImage = multer({ storage: imageStorage });
 const uploadResume = multer({ storage: resumeStorage });
 
