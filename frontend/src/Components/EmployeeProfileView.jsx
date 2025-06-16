@@ -43,7 +43,7 @@ const EmployeeProfileView = ({ profile }) => {
 
           <div className="profile-line">
             {profile.resume ? (
-              <p><strong>Resume:</strong> <a href={`https://hiresphere-job-portal.onrender.com/${profile.resume}`} target="_blank" rel="noopener noreferrer">View Resume</a></p>
+              <p><strong>Resume:</strong> <a href={profile.resume} target="_blank" rel="noopener noreferrer">View Resume</a></p>
             ) : (
               <p><strong>Resume:</strong> N/A</p>
             )}

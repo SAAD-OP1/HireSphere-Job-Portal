@@ -74,7 +74,7 @@ const ViewProfile = () => {
     {/* Left Sidebar */}
     <div className="left-panel">
       <img
-        src={profile.image || 'https://res.cloudinary.com/<cloud_name>/image/upload/v123/default-profile.png'}
+        src={profile.image || 'https://res.cloudinary.com/<duomt9kpq>/image/upload/v123/default-profile.png'}
         alt="Profile"
         className="profile-image"
       />
