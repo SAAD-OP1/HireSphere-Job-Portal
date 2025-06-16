@@ -96,7 +96,7 @@ const profileUpdateSchema = z.object({
 });
 
 
-router.patch('/employee/update-profile', authMiddleware,
+router.patch('/update-profile', authMiddleware,
 uploadImage.fields([
   { name: 'image', maxCount: 1 },
   { name: 'resume', maxCount: 1 },
