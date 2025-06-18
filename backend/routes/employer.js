@@ -2,14 +2,16 @@ const express = require('express');
 const router = express.Router();
 const { z } = require('zod');
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
+
 const { Employer } = require('../db');
 const { JWT_SECRET } = require('../config');
 const { authMiddleware } = require('../middlewares/auth');
 const { handleSignin } = require('../utils/auth');
-const multer = require('multer');
 const { imageStorage } = require('../utils/cloudinary');
 
-const upload = multer({ storage: imageStorage });
+// Use multer with cloudinary storage
+const uploadImage = multer({ storage: imageStorage });
 
 const employerSchema = z.object({
     email: z.string().email(),
@@ -62,15 +64,17 @@ router.get('/me', authMiddleware, async (req, res) => {
   }
 });
 
-// PATCH update employer profile
 const updateSchema = z.object({
   description: z.string().max(1000).optional(),
-  website: z.preprocess(val => val === '' ? undefined : val, z.string().url().optional()),
+  website: z.preprocess(
+    (val) => (val === '' ? undefined : val),
+    z.string().url().optional()
+  ),
   location: z.string().optional(),
   industry: z.string().optional()
 });
 
-router.patch('/update-profile', authMiddleware, upload.single('image'), async (req, res) => {
+router.patch('/update-profile', authMiddleware, uploadImage.single('image'), async (req, res) => {
   try {
     const validated = updateSchema.parse(req.body);
     const update = { ...validated };
@@ -82,7 +86,14 @@ router.patch('/update-profile', authMiddleware, upload.single('image'), async (r
     const updated = await Employer.findByIdAndUpdate(req.user._id, update, { new: true });
     res.json(updated);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    console.error('Error updating employer profile:', err);
+
+    if (err.errors) {
+      const messages = err.errors.map(e => `${e.path.join('.')}: ${e.message}`);
+      return res.status(400).json({ error: messages.join(', ') });
+    }
+
+    res.status(400).json({ error: err.message || 'Unexpected error' });
   }
 });
 

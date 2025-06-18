@@ -8,7 +8,7 @@ return (
 
         {/* Profile Image */}
         <div className="employer-image-wrapper">
-          <img src={profile.image || 'https://res.cloudinary.com/duomt9kpq/image/upload/v1750055427/default-profile_v574t9.jpg'} alt="Employer" className="employer-image" />
+          <img src={profile.image || 'https://res.cloudinary.com/duomt9kpq/image/upload/v1750155820/Default_pfp_cqmuzx.jpg'} alt="Employer" className="employer-image" />
         </div>
 
         <div className="employer-info">

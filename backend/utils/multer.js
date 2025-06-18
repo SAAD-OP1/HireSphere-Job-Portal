@@ -1,16 +1,9 @@
 // utils/multer.js
+// utils/multer.js (optional clean version)
 const multer = require('multer');
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const { cloudinary } = require('./cloudinary');
+const { imageStorage, resumeStorage } = require('./cloudinary');
 
-const storage = new CloudinaryStorage({
-  cloudinary,
-  params: {
-    folder: 'hiresphere_uploads', // You can name this anything
-    allowed_formats: ['jpg', 'png', 'jpeg', 'pdf'],
-  },
-});
+const uploadImage = multer({ storage: imageStorage });
+const uploadResume = multer({ storage: resumeStorage });
 
-const upload = multer({ storage });
-
-module.exports = upload;
+module.exports = { uploadImage, uploadResume };
