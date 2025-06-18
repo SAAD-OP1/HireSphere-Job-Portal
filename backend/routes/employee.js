@@ -8,17 +8,15 @@ const { JWT_SECRET } = require('../config');
 const { authMiddleware } = require('../middlewares/auth');
 const { handleSignin } = require('../utils/auth');
 
+const { uploadImage, uploadResume } = require('../utils/multer');
 const multer = require('multer');
-const { imageStorage, resumeStorage } = require('../utils/cloudinary');
 
-const imageUpload = multer({ storage: imageStorage });
-const resumeUpload = multer({ storage: resumeStorage });
-
-const combineUploads = (req, res, next) => {
-  imageUpload.single('image')(req, res, function (err) {
-    if (err) return next(err);
-    resumeUpload.single('resume')(req, res, function (err) {
-      if (err) return next(err);
+// Middleware to handle both image and resume uploads
+const handleUploads = (req, res, next) => {
+  uploadImage.single('image')(req, res, function (err) {
+    if (err instanceof multer.MulterError) return next(err);
+    uploadResume.single('resume')(req, res, function (err2) {
+      if (err2 instanceof multer.MulterError) return next(err2);
       next();
     });
   });
@@ -107,22 +105,26 @@ const profileUpdateSchema = z.object({
 });
 
 // PATCH route to update profile
-router.patch('/update-profile', authMiddleware, combineUploads, async (req, res) => {
+router.patch('/update-profile', authMiddleware, handleUploads, async (req, res) => {
   try {
     const update = {};
 
+    // Image
     if (req.file && req.file.fieldname === 'image') {
       update.image = req.file.path;
     }
-    if (req.files && req.files.resume) {
+
+    // Resume
+    if (req.files && req.files.resume && req.files.resume[0]) {
       update.resume = req.files.resume[0].path;
     }
 
+    // Parse & validate JSON fields
     const parsed = profileUpdateSchema.parse({
       ...req.body,
       skills: req.body.skills ? JSON.parse(req.body.skills) : undefined,
       experience: req.body.experience ? JSON.parse(req.body.experience) : undefined,
-      basicInfo: req.body.basicInfo ? JSON.parse(req.body.basicInfo) : undefined
+      basicInfo: req.body.basicInfo ? JSON.parse(req.body.basicInfo) : undefined,
     });
 
     Object.assign(update, parsed);
@@ -131,15 +133,8 @@ router.patch('/update-profile', authMiddleware, combineUploads, async (req, res)
     res.json(updated);
   } catch (err) {
     console.error('Update profile error:', err);
-
-    if (err.errors) {
-      const messages = err.errors.map(e => `${e.path.join('.')}: ${e.message}`);
-      return res.status(400).json({ error: messages.join(', ') });
-    }
-
     res.status(500).json({ error: err.message || 'Unexpected error' });
   }
 });
 
 module.exports = router;
-
