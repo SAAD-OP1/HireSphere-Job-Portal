@@ -2,15 +2,15 @@ const express = require('express');
 const router = express.Router();
 const { z } = require('zod');
 const jwt = require('jsonwebtoken');
-const multer = require('multer');
+
 
 const { Employer } = require('../db');
 const { JWT_SECRET } = require('../config');
 const { authMiddleware } = require('../middlewares/auth');
 const { handleSignin } = require('../utils/auth');
-const { imageStorage, resumeStorage } = require('../utils/cloudinary');
 
-// Use multer with cloudinary storage
+const multer = require('multer');
+const { imageStorage, resumeStorage } = require('../utils/cloudinary');
 const uploadImage = multer({ storage: imageStorage });
 
 const employerSchema = z.object({
@@ -79,6 +79,7 @@ router.patch('/update-profile', authMiddleware, uploadImage.single('image'), asy
     const validated = updateSchema.parse(req.body);
     const update = { ...validated };
 
+    console.log('Multer file:', req.file);
     if (req.file && req.file.path) {
       update.image = req.file.path;
     } else {

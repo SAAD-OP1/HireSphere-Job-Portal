@@ -2,15 +2,27 @@ const express = require('express');
 const router = express.Router();
 const { z } = require('zod');
 const jwt = require('jsonwebtoken');
-const multer = require('multer');
 
 const { Employee } = require('../db');
 const { JWT_SECRET } = require('../config');
 const { authMiddleware } = require('../middlewares/auth');
 const { handleSignin } = require('../utils/auth');
+
+const multer = require('multer');
 const { imageStorage, resumeStorage } = require('../utils/cloudinary');
 
-const upload = multer();
+const imageUpload = multer({ storage: imageStorage });
+const resumeUpload = multer({ storage: resumeStorage });
+
+const combineUploads = (req, res, next) => {
+  imageUpload.single('image')(req, res, function (err) {
+    if (err) return next(err);
+    resumeUpload.single('resume')(req, res, function (err) {
+      if (err) return next(err);
+      next();
+    });
+  });
+};
 
 router.get('/stats/employees-count', async (req, res) => {
     try {
@@ -95,45 +107,39 @@ const profileUpdateSchema = z.object({
 });
 
 // PATCH route to update profile
-router.patch('/update-profile', authMiddleware, 
-  multer({ storage: imageStorage }).fields([{ name: 'image', maxCount: 1 },{ name: 'resume', maxCount: 1 }]), async (req, res) => {
-    try {
-      // Parse files from Cloudinary
-      const update = {};
+router.patch('/update-profile', authMiddleware, combineUploads, async (req, res) => {
+  try {
+    const update = {};
 
-      if (req.files?.image?.length) {
-        update.image = req.files.image[0].path; // or secure_url if using it
-      }
-
-      if (req.files?.resume?.length) {
-        update.resume = req.files.resume[0].path;
-      }
-
-      // Parse JSON fields
-      const parsed = profileUpdateSchema.parse({
-        ...req.body,
-        skills: req.body.skills ? JSON.parse(req.body.skills) : undefined,
-        experience: req.body.experience ? JSON.parse(req.body.experience) : undefined,
-        basicInfo: req.body.basicInfo ? JSON.parse(req.body.basicInfo) : undefined
-      });
-
-      // Merge parsed values
-      Object.assign(update, parsed);
-
-      const updated = await Employee.findByIdAndUpdate(req.user._id, update, { new: true });
-      res.json(updated);
-    } catch (err) {
-      console.error('Update profile error:', err);
-
-      if (err.errors) {
-        const messages = err.errors.map(e => `${e.path.join('.')}: ${e.message}`);
-        return res.status(400).json({ error: messages.join(', ') });
-      }
-
-      res.status(400).json({ error: err.message || 'Unexpected error' });
+    if (req.file && req.file.fieldname === 'image') {
+      update.image = req.file.path;
     }
+    if (req.files && req.files.resume) {
+      update.resume = req.files.resume[0].path;
+    }
+
+    const parsed = profileUpdateSchema.parse({
+      ...req.body,
+      skills: req.body.skills ? JSON.parse(req.body.skills) : undefined,
+      experience: req.body.experience ? JSON.parse(req.body.experience) : undefined,
+      basicInfo: req.body.basicInfo ? JSON.parse(req.body.basicInfo) : undefined
+    });
+
+    Object.assign(update, parsed);
+
+    const updated = await Employee.findByIdAndUpdate(req.user._id, update, { new: true });
+    res.json(updated);
+  } catch (err) {
+    console.error('Update profile error:', err);
+
+    if (err.errors) {
+      const messages = err.errors.map(e => `${e.path.join('.')}: ${e.message}`);
+      return res.status(400).json({ error: messages.join(', ') });
+    }
+
+    res.status(500).json({ error: err.message || 'Unexpected error' });
   }
-);
+});
 
 module.exports = router;
 
