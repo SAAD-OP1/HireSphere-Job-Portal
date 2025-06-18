@@ -8,7 +8,7 @@ const { Employer } = require('../db');
 const { JWT_SECRET } = require('../config');
 const { authMiddleware } = require('../middlewares/auth');
 const { handleSignin } = require('../utils/auth');
-const { imageStorage } = require('../utils/cloudinary');
+const { imageStorage, resumeStorage } = require('../utils/cloudinary');
 
 // Use multer with cloudinary storage
 const uploadImage = multer({ storage: imageStorage });
@@ -79,8 +79,10 @@ router.patch('/update-profile', authMiddleware, uploadImage.single('image'), asy
     const validated = updateSchema.parse(req.body);
     const update = { ...validated };
 
-    if (req.file) {
+    if (req.file && req.file.path) {
       update.image = req.file.path;
+    } else {
+      console.log('Image upload failed or missing path:', req.file);
     }
 
     const updated = await Employer.findByIdAndUpdate(req.user._id, update, { new: true });
@@ -90,9 +92,12 @@ router.patch('/update-profile', authMiddleware, uploadImage.single('image'), asy
 
     if (err.errors) {
       const messages = err.errors.map(e => `${e.path.join('.')}: ${e.message}`);
-      return res.status(400).json({ error: messages.join(', ') });
+      console.error('Update profile error:', err);
+      if (err instanceof z.ZodError) {
+        return res.status(400).json({ error: err.errors.map(e => e.message).join(', ') });
+      }
+      res.status(500).json({ error: err.message || JSON.stringify(err) || 'Unexpected error' })
     }
-
     res.status(400).json({ error: err.message || 'Unexpected error' });
   }
 });
