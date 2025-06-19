@@ -63,8 +63,6 @@ const ViewProfile = () => {
   return Math.floor((filled / requiredFields.length) * 100);
 };
 
-
-
   if (!profile) return <div>Loading...</div>;
 
   return (
@@ -74,7 +72,7 @@ const ViewProfile = () => {
     {/* Left Sidebar */}
     <div className="left-panel">
       <img
-        src={profile.image || ''}
+        src={profile.image}
         alt="Profile"
         className="profile-image"
       />

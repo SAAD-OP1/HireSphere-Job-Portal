@@ -8,7 +8,7 @@ const EmployeeProfileView = ({ profile }) => {
       <div className="profile-grid">
         {/* Left Sidebar */}
         <div className="left-panel">
-          <img src={profile.image || ''} alt="Profile" className="profile-image" />
+          <img src={profile.image} alt="Profile" className="profile-image" />
           <p><strong>Name:</strong> {profile.name}</p>
           <h3>Introduction</h3>
           <p>{profile.introduction || "N/A"}</p>

@@ -8,7 +8,7 @@ return (
 
         {/* Profile Image */}
         <div className="employer-image-wrapper">
-          <img src={profile.image || ''} alt="Employer" className="employer-image" />
+          <img src={profile.image} alt="Employer" className="employer-image" />
         </div>
 
         <div className="employer-info">

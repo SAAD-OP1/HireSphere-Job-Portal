@@ -11,7 +11,7 @@ const { handleSignin } = require('../utils/auth');
 const multer = require('multer');
 const { imageStorage } = require('../utils/cloudinary');
 const uploadImage = multer({ storage: imageStorage });
-const DEFAULT_IMAGE_URL = 'https://res.cloudinary.com/duomt9kpq/image/upload/v1750055427/default-profile_v574t9.jpg';
+const DEFAULT_IMAGE_URL = 'https://res.cloudinary.com/duomt9kpq/image/upload/v1750155820/Default_pfp_cqmuzx.jpg';
 
 const employerSchema = z.object({
     email: z.string().email(),

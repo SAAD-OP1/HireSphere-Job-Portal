@@ -8,7 +8,7 @@ const { JWT_SECRET } = require('../config');
 const { authMiddleware } = require('../middlewares/auth');
 const { handleSignin } = require('../utils/auth');
 const { uploadImage } = require('../utils/multer');
-const DEFAULT_IMAGE_URL = 'https://res.cloudinary.com/duomt9kpq/image/upload/v1750055427/default-profile_v574t9.jpg';
+const DEFAULT_IMAGE_URL = 'https://res.cloudinary.com/duomt9kpq/image/upload/v1750155820/Default_pfp_cqmuzx.jpg';
 
 router.get('/stats/employees-count', async (req, res) => {
     try {
