@@ -33,10 +33,6 @@ const employeeSchema = new mongoose.Schema({
   skills: {
     type: [String],
   },
-  resume: {
-    type: String,
-    default: '',
-  }
 });
 
 const employerSchema = new mongoose.Schema({

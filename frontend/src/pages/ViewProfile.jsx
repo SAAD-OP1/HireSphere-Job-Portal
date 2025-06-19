@@ -22,7 +22,7 @@ const ViewProfile = () => {
   }, []);
 
   const calculateCompletion = (profile) => {
-  const requiredFields = ['email','name','phoneNumber','jobRole','introduction','skills','image','resume','basicInfo','experience'];
+  const requiredFields = ['email','name','phoneNumber','jobRole','introduction','skills','image','basicInfo','experience'];
   let filled = 0;
 
   for (let field of requiredFields) {

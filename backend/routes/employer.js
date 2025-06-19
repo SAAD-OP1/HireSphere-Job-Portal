@@ -3,14 +3,13 @@ const router = express.Router();
 const { z } = require('zod');
 const jwt = require('jsonwebtoken');
 
-
 const { Employer } = require('../db');
 const { JWT_SECRET } = require('../config');
 const { authMiddleware } = require('../middlewares/auth');
 const { handleSignin } = require('../utils/auth');
 
 const multer = require('multer');
-const { imageStorage, resumeStorage } = require('../utils/cloudinary');
+const { imageStorage } = require('../utils/cloudinary');
 const uploadImage = multer({ storage: imageStorage });
 
 const employerSchema = z.object({
@@ -79,11 +78,8 @@ router.patch('/update-profile', authMiddleware, uploadImage.single('image'), asy
     const validated = updateSchema.parse(req.body);
     const update = { ...validated };
 
-    console.log('Multer file:', req.file);
     if (req.file && req.file.path) {
       update.image = req.file.path;
-    } else {
-      console.log('Image upload failed or missing path:', req.file);
     }
 
     const updated = await Employer.findByIdAndUpdate(req.user._id, update, { new: true });
@@ -91,15 +87,11 @@ router.patch('/update-profile', authMiddleware, uploadImage.single('image'), asy
   } catch (err) {
     console.error('Error updating employer profile:', err);
 
-    if (err.errors) {
-      const messages = err.errors.map(e => `${e.path.join('.')}: ${e.message}`);
-      console.error('Update profile error:', err);
-      if (err instanceof z.ZodError) {
-        return res.status(400).json({ error: err.errors.map(e => e.message).join(', ') });
-      }
-      res.status(500).json({ error: err.message || JSON.stringify(err) || 'Unexpected error' })
+    if (err instanceof z.ZodError) {
+      return res.status(400).json({ error: err.errors.map(e => e.message).join(', ') });
     }
-    res.status(400).json({ error: err.message || 'Unexpected error' });
+
+    res.status(500).json({ error: err.message || 'Unexpected error' });
   }
 });
 
