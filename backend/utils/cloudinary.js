@@ -9,7 +9,6 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-
 const imageStorage = new CloudinaryStorage({
   cloudinary,
   params: {
@@ -19,13 +18,4 @@ const imageStorage = new CloudinaryStorage({
   },
 });
 
-const resumeStorage = new CloudinaryStorage({
-  cloudinary,
-  params: {
-    folder: 'hiresphere/resumes',
-    allowed_formats: ['pdf'],
-    public_id: (req, file) => 'resume_' + Date.now(),
-  },
-});
-
-module.exports = { cloudinary, imageStorage, resumeStorage };
+module.exports = { cloudinary, imageStorage };

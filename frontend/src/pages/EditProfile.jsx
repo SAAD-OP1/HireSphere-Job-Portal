@@ -5,7 +5,6 @@ const EditProfile = () => {
   const [introduction, setIntroduction] = useState('');
   const [skills, setSkills] = useState('');
   const [image, setImage] = useState(null);
-  const [resume, setResume] = useState(null);
   const [basicInfo, setBasicInfo] = useState({ age: '', highestQualification: '', location: ''});
   const [experience, setExperience] = useState([{ role: '', company: '', duration: '' }]);
   const [message, setMessage] = useState('');
@@ -63,7 +62,6 @@ const EditProfile = () => {
     form.append('basicInfo', JSON.stringify(parsedBasicInfo));
     form.append('experience', JSON.stringify(experience));
     if (image) form.append('image', image);
-    if (resume) form.append('resume', resume);
 
     try {
       const res = await fetch('https://hiresphere-job-portal.onrender.com/api/employee/update-profile', {
@@ -166,9 +164,6 @@ const EditProfile = () => {
 
         <label>Profile Image</label>
         <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files[0])} />
-
-        <label>Upload Resume (PDF only)</label>
-        <input type="file" accept="application/pdf" onChange={(e) => setResume(e.target.files[0])} />
 
         <button type="submit">Update Profile</button>
       </form>

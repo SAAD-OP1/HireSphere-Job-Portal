@@ -110,19 +110,6 @@ const ViewProfile = () => {
         </p>
       </div>
 
-      <div className="profile-line">
-        {profile.resume ? (
-          <p>
-            <strong>Resume:</strong>{' '}
-            <a href={profile.resume} target="_blank" rel="noopener noreferrer">
-              View Resume
-            </a>
-          </p>
-        ) : (
-          <p><strong>Resume:</strong> <MissingField /></p>
-        )}
-      </div>
-
       <h3>Experience</h3>
       {profile.experience?.length > 0 ? (
         profile.experience.map((exp, idx) => (

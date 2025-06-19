@@ -7,20 +7,8 @@ const { Employee } = require('../db');
 const { JWT_SECRET } = require('../config');
 const { authMiddleware } = require('../middlewares/auth');
 const { handleSignin } = require('../utils/auth');
+const { uploadImage } = require('../utils/multer');
 
-const { uploadImage, uploadResume } = require('../utils/multer');
-const multer = require('multer');
-
-// Middleware to handle both image and resume uploads
-const handleUploads = (req, res, next) => {
-  uploadImage.single('image')(req, res, function (err) {
-    if (err instanceof multer.MulterError) return next(err);
-    uploadResume.single('resume')(req, res, function (err2) {
-      if (err2 instanceof multer.MulterError) return next(err2);
-      next();
-    });
-  });
-};
 
 router.get('/stats/employees-count', async (req, res) => {
     try {
@@ -105,21 +93,14 @@ const profileUpdateSchema = z.object({
 });
 
 // PATCH route to update profile
-router.patch('/update-profile', authMiddleware, handleUploads, async (req, res) => {
+router.patch('/update-profile', authMiddleware, uploadImage.single('image'), async (req, res) => {
   try {
     const update = {};
 
-    // Image
-    if (req.file && req.file.fieldname === 'image') {
+    if (req.file && req.file.path) {
       update.image = req.file.path;
     }
 
-    // Resume
-    if (req.files && req.files.resume && req.files.resume[0]) {
-      update.resume = req.files.resume[0].path;
-    }
-
-    // Parse & validate JSON fields
     const parsed = profileUpdateSchema.parse({
       ...req.body,
       skills: req.body.skills ? JSON.parse(req.body.skills) : undefined,

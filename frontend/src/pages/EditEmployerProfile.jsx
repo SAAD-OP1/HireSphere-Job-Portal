@@ -41,28 +41,38 @@ const EditEmployerProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = new FormData();
-    Object.entries(formData).forEach(([key, value]) => {
-      form.append(key, value);
-    });
+
+    // Append only allowed backend fields
+    form.append('description', formData.description || '');
+    form.append('website', formData.website || '');
+    form.append('location', formData.location || '');
+    form.append('industry', formData.industry || '');
+
     if (image) {
       form.append('image', image);
     }
 
-    const res = await fetch('https://hiresphere-job-portal.onrender.com/api/employer/update-profile', {
-      method: 'PATCH',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      },
-      body: form
-    });
+    try {
+      const res = await fetch('https://hiresphere-job-portal.onrender.com/api/employer/update-profile', {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+        body: form
+      });
 
-    const data = await res.json();
-    if (res.ok) {
-      setMessage('Profile updated successfully!');
-    } else {
+      const data = await res.json();
+      if (res.ok) {
+        setMessage('Profile updated successfully!');
+      } else {
+        setMessage(data.error || 'Update failed.');
+      }
+    } catch (err) {
+      console.error('Error submitting form:', err);
       setMessage('Update failed.');
     }
   };
+
 
   return (
     <div className="edit-employer-profile-container">
@@ -76,6 +86,7 @@ const EditEmployerProfile = () => {
           value={formData.companyName}
           onChange={handleChange}
           required
+          disabled
         />
         <input
           type="email"
@@ -84,13 +95,15 @@ const EditEmployerProfile = () => {
           value={formData.email}
           onChange={handleChange}
           required
+          disabled
         />
         <input
           type="text"
-          name="phone"
+          name="phoneNumber"
           placeholder="Phone Number"
           value={formData.phoneNumber}
           onChange={handleChange}
+          disabled
         />
         <input
           type="text"
