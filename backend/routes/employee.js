@@ -8,7 +8,7 @@ const { JWT_SECRET } = require('../config');
 const { authMiddleware } = require('../middlewares/auth');
 const { handleSignin } = require('../utils/auth');
 const { uploadImage } = require('../utils/multer');
-
+const DEFAULT_IMAGE_URL = 'https://res.cloudinary.com/duomt9kpq/image/upload/v1750055427/default-profile_v574t9.jpg';
 
 router.get('/stats/employees-count', async (req, res) => {
     try {
@@ -42,7 +42,7 @@ router.post('/signup', async (req, res) => {
     if (existingUser) {
         return res.status(411).json({ message: 'Email already taken' });
     }
-
+    body.image = DEFAULT_IMAGE_URL;
     const employee = await Employee.create(body);
     const token = jwt.sign({ _id: employee._id, role: 'employee' }, JWT_SECRET);
 

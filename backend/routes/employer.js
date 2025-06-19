@@ -11,6 +11,7 @@ const { handleSignin } = require('../utils/auth');
 const multer = require('multer');
 const { imageStorage } = require('../utils/cloudinary');
 const uploadImage = multer({ storage: imageStorage });
+const DEFAULT_IMAGE_URL = 'https://res.cloudinary.com/duomt9kpq/image/upload/v1750055427/default-profile_v574t9.jpg';
 
 const employerSchema = z.object({
     email: z.string().email(),
@@ -31,7 +32,7 @@ router.post('/signup', async (req, res) => {
     if (existingUser) {
         return res.status(411).json({ message: 'Email already taken' });
     }
-
+    body.image = DEFAULT_IMAGE_URL;
     const employer = await Employer.create(body);
     const token = jwt.sign({ _id: employer._id, role: 'employer' }, JWT_SECRET);
 

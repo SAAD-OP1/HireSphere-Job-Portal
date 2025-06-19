@@ -45,7 +45,7 @@ const EmployerDashboard = () => {
             <div className="job-card-header">
               <a href={`/profile/employer/${job.createdBy?._id}`} target="_blank" rel="noopener noreferrer" className="company-name">
                   <img
-                    src={job.createdBy.image || 'https://res.cloudinary.com/duomt9kpq/image/upload/v1750155820/Default_pfp_cqmuzx.jpg'}
+                    src={job.createdBy.image || ''}
                     alt="Company Logo"
                     className="job-company-logo"
                   />

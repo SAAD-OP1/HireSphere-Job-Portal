@@ -13,7 +13,7 @@ const imageStorage = new CloudinaryStorage({
   cloudinary,
   params: {
     folder: 'hiresphere/profiles',
-    allowed_formats: ['jpg', 'jpeg', 'png'],
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
     public_id: (req, file) => 'profile_' + Date.now(),
   },
 });
