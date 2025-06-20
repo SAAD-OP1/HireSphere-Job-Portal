@@ -44,6 +44,9 @@ Create a .env file and fill the below details
 ```
 MONGO_URL=<YOUR MONGODB CONNECTION STRING/URL>
 JWT_SECRET=<YOUR_PASSWORD>
+CLOUDINARY_CLOUD_NAME=<YOUR_CLOUDINARY_CLOUD_NAME>
+CLOUDINARY_API_KEY=<YOUR_CLOUDINARY_API_KEY>
+CLOUDINARY_API_SECRET=<YOUR_CLOUDINARY_API_SECRET>
 ```
 Note: Make sure to use no spaces or single or double quotes in the above given two lines.
 
@@ -70,9 +73,11 @@ The server will start on `https://hiresphere-job-portal.onrender.com`.
   name: String,
   phoneNumber: String,
   jobRole: String,
-  image: String, // Optional
+  image: String
+  experience: [{role: String, company: String, duration: String}], //Optional
+  basicInfo: {age: Number,highestQualification: String,location: String}, //Optional
   introduction: String, //Optional
-  skills: [String]  //Optional
+  skills: [String], //Optional
 }
 ```
 
@@ -82,8 +87,13 @@ The server will start on `https://hiresphere-job-portal.onrender.com`.
 {
   email: String,
   password: String,
-  name: String,
-  companyName: String
+  companyName: String,
+  phoneNumber: String,
+  image: String,
+  description: String, //Optional
+  website: String, //Optional
+  location: String, //Optional
+  industry: String, //Optional
 }
 ```
 
@@ -95,8 +105,8 @@ The server will start on `https://hiresphere-job-portal.onrender.com`.
   company: String,
   industry: String,
   location: String,
+  salary: Number,
   postingDate: Date,
-  openingsLeft: Number,
   skills: [String],
   createdBy: ObjectId (Employer)
 }
@@ -117,8 +127,8 @@ The server will start on `https://hiresphere-job-portal.onrender.com`.
 
 ## 📫 API Endpoints Overview
 
-- `/api/employee/signup`, `/signin`
-- `/api/employer/signup`, `/signin`
+- `/api/employee/signup`, `/signin`, `/stats/employees-count`, `/me`, `/public/:id`, `/update-profile`
+- `/api/employer/signup`, `/signin`, `/me`, `/public/:id`, `/update-profile`
 - `/api/jobs/postJob`, `/viewJobs`, `/jobsPosted`, `/stats/jobs-count`
 - `/api/applications/apply/:jobID`, `/viewApplications`, `/jobApplications`, `/:applicationId/status`
 
@@ -133,6 +143,7 @@ The server will start on `https://hiresphere-job-portal.onrender.com`.
 "jsonwebtoken": "^9.0.2",
 "mongoose": "^8.13.2",
 "multer": "^1.4.5-lts.2",
+"multer-storage-cloudinary": "^4.0.0",
 "zod": "^3.24.2"
 ```
 

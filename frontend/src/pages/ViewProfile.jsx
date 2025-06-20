@@ -54,7 +54,12 @@ const ViewProfile = () => {
         filled++;
       }
     }
-
+    else if (field === 'image') {
+      const defaultImage = 'https://res.cloudinary.com/duomt9kpq/image/upload/v1750155820/Default_pfp_cqmuzx.jpg';
+      if (typeof value === 'string' && value.trim() !== '' && value !== defaultImage) {
+        filled++;
+      }
+    }
     else if (typeof value === 'string' && value.trim() !== '') {
       filled++;
     }

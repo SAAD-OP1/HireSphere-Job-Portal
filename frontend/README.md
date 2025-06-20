@@ -61,17 +61,6 @@ src/
 └── main.jsx            # React entry point
 ```
 
-## 📸 Screenshots
-
-_Add screenshots here if needed._
-
-## ✅ To Do
-
-- [ ] Add profile image upload for job seekers
-- [ ] Enhance job filtering and search
-- [ ] Add toast notifications
-- [ ] Improve responsiveness for mobile
-
 ---
 
 ## 📜 License
